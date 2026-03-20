@@ -30,29 +30,48 @@
   <section class="demo-container" id="demo">
     <div class="demo-section-inner">
       <div class="demo-kinetic-card">
-        <div class="demo-kinetic-copy">
-          <h3 class="demo-kinetic-title">Interactive Coaching Demo</h3>
-          <p class="demo-kinetic-lead">Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Click on the timeline or comments to jump directly to annotated frames.</p>
-          <ul class="demo-features-list demo-kinetic-steps">
-            <li>
-              <span class="demo-kinetic-step-index" aria-hidden="true">01</span>
-              <div class="demo-kinetic-step-body">
-                <span class="demo-kinetic-step-title">Time-coded video feedback</span>
-              </div>
-            </li>
-            <li>
-              <span class="demo-kinetic-step-index" aria-hidden="true">02</span>
-              <div class="demo-kinetic-step-body">
-                <span class="demo-kinetic-step-title">On-screen drawing &amp; annotations</span>
-              </div>
-            </li>
-            <li>
-              <span class="demo-kinetic-step-index" aria-hidden="true">03</span>
-              <div class="demo-kinetic-step-body">
-                <span class="demo-kinetic-step-title">Detailed shot technique breakdown</span>
-              </div>
-            </li>
-          </ul>
+        <div class="demo-kinetic-aside">
+          <div class="demo-kinetic-copy">
+            <h3 class="demo-kinetic-title">Interactive Coaching Demo</h3>
+            <p class="demo-kinetic-lead">Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Use the comment arrows to step through coach notes, or click the timeline to jump straight to a moment.</p>
+            <ul class="demo-features-list demo-kinetic-steps">
+              <li>
+                <span class="demo-kinetic-step-index" aria-hidden="true">01</span>
+                <div class="demo-kinetic-step-body">
+                  <span class="demo-kinetic-step-title">Time-coded video feedback</span>
+                </div>
+              </li>
+              <li>
+                <span class="demo-kinetic-step-index" aria-hidden="true">02</span>
+                <div class="demo-kinetic-step-body">
+                  <span class="demo-kinetic-step-title">On-screen drawing &amp; annotations</span>
+                </div>
+              </li>
+              <li>
+                <span class="demo-kinetic-step-index" aria-hidden="true">03</span>
+                <div class="demo-kinetic-step-body">
+                  <span class="demo-kinetic-step-title">Detailed shot technique breakdown</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="demo-kinetic-comments-nav comments-carousel-nav" role="toolbar" aria-label="Step through comments">
+            <button type="button" class="comments-nav-btn" id="commentsNavPrev"
+              onclick="stepCommentCarousel(-1)" aria-label="Previous comment">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            <span class="comments-nav-meta" id="commentsNavMeta" aria-live="polite"></span>
+            <button type="button" class="comments-nav-btn" id="commentsNavNext"
+              onclick="stepCommentCarousel(1)" aria-label="Next comment">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div class="demo-kinetic-visual">

@@ -118,6 +118,8 @@ let currentTime = 0;
 let isPlaying = false;
 let playInterval = null;
 let activeCommentId = null;
+let visibleCommentIndex = -1;
+let commentCarouselAnimating = false;
 let openMenuId = null;
 let activeAnnotationTimeout = null;
 let activeFrameId = null;
@@ -377,20 +379,207 @@ function onAnnotationDragEnd() {
 
 // ── Comments ───────────────────────────────────────────────────────────
 function activateComment(id, ts) {
-  $$('.comment-item').forEach((el) => el.classList.remove('active'));
-  activeCommentId = id;
-  const el = $('comment-' + id);
-  if (el) el.classList.add('active');
+  const idx = MOCK.comments.findIndex((c) => c.id === id);
+  if (idx < 0) return;
+  showCommentAtIndex(idx, { instant: true, withMedia: true });
+}
+
+function applyCommentMediaState(comment) {
+  if (!comment) return;
   if (isPlaying) stopPlayback();
-
-  const comment = MOCK.comments.find((c) => c.id === id);
   const defaultMarker = { cx: 295, cy: 130, r: 28 };
-  const marker = comment?.frames?.[0]?.marker || defaultMarker;
-  seekToTime(ts, false);
+  const marker = comment.frames?.[0]?.marker || defaultMarker;
+  seekToTime(comment.timestamp, false);
   showFrameAnnotation(marker);
-
   updateLoopRange(comment);
-  el && el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+const COMMENT_NAV_CLASS =
+  'comment-nav-focused comment-nav-leave-left comment-nav-leave-right comment-nav-prep-from-right comment-nav-prep-from-left';
+
+function stripCommentNavClasses(el) {
+  COMMENT_NAV_CLASS.split(' ').forEach((c) => el.classList.remove(c));
+}
+
+function syncCommentFocusability() {
+  $$('#commentsArea .comment-item').forEach((el) => {
+    const focusable =
+      el.classList.contains('active') || el.classList.contains('comment-nav-focused');
+    el.tabIndex = focusable ? 0 : -1;
+    if (focusable) {
+      el.removeAttribute('aria-disabled');
+    } else {
+      el.setAttribute('aria-disabled', 'true');
+    }
+  });
+}
+
+function clearCommentListState() {
+  visibleCommentIndex = -1;
+  activeCommentId = null;
+  $$('.comment-item').forEach((el) => {
+    el.classList.remove('active');
+    stripCommentNavClasses(el);
+  });
+  updateLoopRange(null);
+  hideAnnotation();
+  updateCommentsNavMeta();
+  syncCommentFocusability();
+}
+
+function updateCommentsNavMeta() {
+  const meta = $('commentsNavMeta');
+  if (!meta) return;
+  const n = MOCK.comments.length;
+  if (n === 0) {
+    meta.textContent = 'No comments';
+    return;
+  }
+  if (visibleCommentIndex < 0) {
+    meta.textContent = `— / ${n}`;
+    return;
+  }
+  meta.textContent = `${visibleCommentIndex + 1} / ${n}`;
+}
+
+function applyMediaSelectionInstant(index) {
+  $$('.comment-item').forEach((el) => {
+    el.classList.remove('active');
+    stripCommentNavClasses(el);
+  });
+  if (index < 0 || index >= MOCK.comments.length) {
+    syncCommentFocusability();
+    return;
+  }
+  const el = $('comment-' + MOCK.comments[index].id);
+  if (el) el.classList.add('active');
+  syncCommentFocusability();
+}
+
+function applyNavFocusInstant(index) {
+  $$('.comment-item').forEach((el) => {
+    el.classList.remove('active');
+    stripCommentNavClasses(el);
+  });
+  if (index < 0 || index >= MOCK.comments.length) {
+    syncCommentFocusability();
+    return;
+  }
+  const el = $('comment-' + MOCK.comments[index].id);
+  if (el) el.classList.add('comment-nav-focused');
+  syncCommentFocusability();
+}
+
+function showCommentAtIndex(index, options = {}) {
+  const { instant = true, enterDirection = 1, withMedia = false } = options;
+  const n = MOCK.comments.length;
+  if (n === 0) return;
+
+  if (index < 0 || index >= n) {
+    clearCommentListState();
+    return;
+  }
+
+  const comment = MOCK.comments[index];
+  const prevIdx = visibleCommentIndex;
+
+  if (withMedia) {
+    activeCommentId = comment.id;
+    applyCommentMediaState(comment);
+    visibleCommentIndex = index;
+    applyMediaSelectionInstant(index);
+    updateCommentsNavMeta();
+    const el = $('comment-' + comment.id);
+    el && el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return;
+  }
+
+  activeCommentId = null;
+  hideAnnotation();
+  updateLoopRange(null);
+  $$('.comment-item').forEach((el) => el.classList.remove('active'));
+
+  if (instant || prevIdx < 0 || prevIdx === index) {
+    visibleCommentIndex = index;
+    applyNavFocusInstant(index);
+    updateCommentsNavMeta();
+    const el = $('comment-' + comment.id);
+    el && el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return;
+  }
+
+  commentCarouselAnimating = true;
+  const oldEl = prevIdx >= 0 ? $('comment-' + MOCK.comments[prevIdx].id) : null;
+  const newEl = $('comment-' + comment.id);
+  const goingForward = enterDirection > 0;
+
+  if (oldEl) {
+    oldEl.classList.remove('comment-nav-focused');
+    oldEl.classList.add(goingForward ? 'comment-nav-leave-left' : 'comment-nav-leave-right');
+  }
+  if (newEl) {
+    stripCommentNavClasses(newEl);
+    newEl.classList.add(goingForward ? 'comment-nav-prep-from-right' : 'comment-nav-prep-from-left');
+  }
+  syncCommentFocusability();
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if (newEl) {
+        newEl.classList.remove('comment-nav-prep-from-right', 'comment-nav-prep-from-left');
+        newEl.classList.add('comment-nav-focused');
+      }
+      visibleCommentIndex = index;
+      updateCommentsNavMeta();
+      syncCommentFocusability();
+      newEl && newEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setTimeout(() => {
+        if (oldEl) {
+          oldEl.classList.remove('comment-nav-leave-left', 'comment-nav-leave-right');
+        }
+        commentCarouselAnimating = false;
+        syncCommentFocusability();
+      }, 360);
+    });
+  });
+}
+
+function stepCommentCarousel(delta) {
+  const n = MOCK.comments.length;
+  if (n === 0 || commentCarouselAnimating) return;
+
+  const prev = visibleCommentIndex;
+  let next;
+  if (prev < 0) {
+    next = delta > 0 ? 0 : n - 1;
+  } else {
+    next = (prev + delta + n) % n;
+  }
+  if (prev >= 0 && next === prev) return;
+
+  const enterDirection = delta > 0 ? 1 : -1;
+  showCommentAtIndex(next, { instant: false, enterDirection, withMedia: false });
+}
+
+function refreshCommentListAfterRender() {
+  $$('.comment-item').forEach((el) => {
+    el.classList.remove('active');
+    stripCommentNavClasses(el);
+  });
+  if (activeCommentId != null) {
+    const idx = MOCK.comments.findIndex((c) => c.id === activeCommentId);
+    if (idx >= 0) {
+      visibleCommentIndex = idx;
+      const el = $('comment-' + activeCommentId);
+      if (el) el.classList.add('active');
+    }
+  } else if (visibleCommentIndex >= 0 && visibleCommentIndex < MOCK.comments.length) {
+    const c = MOCK.comments[visibleCommentIndex];
+    const el = $('comment-' + c.id);
+    if (el) el.classList.add('comment-nav-focused');
+  }
+  updateCommentsNavMeta();
+  syncCommentFocusability();
 }
 
 function updateLoopRange(comment) {
@@ -580,7 +769,7 @@ function renderComments() {
   const container = $('commentsArea');
   if (!container) return;
 
-  container.innerHTML = MOCK.comments
+  const itemsHtml = MOCK.comments
     .map((c) => {
       const tsLabel = c.loopEnd !== null
         ? `${fmt(c.timestamp)} <span class="ts-arrow">→</span> ${fmt(c.loopEnd)}`
@@ -651,6 +840,9 @@ function renderComments() {
     `;
     })
     .join('');
+
+  container.innerHTML = itemsHtml;
+  refreshCommentListAfterRender();
 }
 
 // ── Render Progress Markers ────────────────────────────────────────────
@@ -739,6 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTechniqueItems();
   updateProgressUI();
   initDraggableAnnotation();
+  updateCommentsNavMeta();
 
   $('composerInput')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {

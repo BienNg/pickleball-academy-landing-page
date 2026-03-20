@@ -99,9 +99,16 @@ body {
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
 }
-.demo-kinetic-copy {
+.demo-kinetic-aside {
   width: 100%;
   order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.25rem;
+}
+.demo-kinetic-copy {
+  width: 100%;
 }
 .demo-kinetic-visual {
   width: 100%;
@@ -216,12 +223,33 @@ body {
     max-width: none;
     order: 1;
   }
-  .demo-kinetic-copy {
+  .demo-kinetic-aside {
     flex: 2 1 0;
     min-width: 0;
     max-width: 26rem;
     order: 2;
   }
+}
+
+/* Comment stepper in demo aside (dark card) */
+.demo-kinetic-comments-nav.comments-carousel-nav {
+  padding: 0;
+  margin-top: 0.25rem;
+  border-bottom: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 1.25rem;
+}
+.demo-kinetic-comments-nav .comments-nav-meta {
+  color: #94a3b8;
+}
+.demo-kinetic-comments-nav .comments-nav-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #b8e0d0;
+}
+.demo-kinetic-comments-nav .comments-nav-btn:hover {
+  background: rgba(143, 185, 168, 0.2);
+  border-color: rgba(143, 185, 168, 0.45);
 }
 
 @media (max-width: 999px) {
@@ -472,6 +500,44 @@ body {
   font-weight: 600;
 }
 
+/* ─── Demo comment nav (toolbar layout shared with aside) ─── */
+.comments-carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.comments-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background: #fff;
+  color: var(--primary);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, transform 0.08s;
+  flex-shrink: 0;
+}
+.comments-nav-btn:hover {
+  background: var(--primary-bg);
+  border-color: rgba(143,185,168,0.45);
+}
+.comments-nav-btn:active { transform: scale(0.96); }
+
+.comments-nav-meta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
 /* ─── Comments List ─── */
 .comments-scroll {
   flex: 1;
@@ -484,11 +550,58 @@ body {
 .comment-item {
   padding: 10px 6px;
   border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.12s;
+  cursor: default;
+  transition:
+    background 0.12s,
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.comment-item:hover { background: rgba(143,185,168,0.05); }
+
+/* Inactive rows: muted and non-interactive (exclude transient nav animation classes) */
+.comments-scroll
+  .comment-item:not(.active):not(.comment-nav-focused):not(.comment-nav-leave-left):not(.comment-nav-leave-right):not(.comment-nav-prep-from-right):not(.comment-nav-prep-from-left) {
+  opacity: 0.38;
+  filter: grayscale(0.35);
+  pointer-events: none;
+  cursor: default;
+}
+
+.comments-scroll .comment-item:is(.active, .comment-nav-focused) {
+  opacity: 1;
+  filter: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.comments-scroll .comment-item:is(.active, .comment-nav-focused):hover {
+  background: rgba(143,185,168,0.05);
+}
 .comment-item.active { background: rgba(143,185,168,0.09); }
+.comment-item.comment-nav-focused { background: rgba(143,185,168,0.075); }
+
+.comment-item.comment-nav-leave-left,
+.comment-item.comment-nav-leave-right,
+.comment-item.comment-nav-prep-from-right,
+.comment-item.comment-nav-prep-from-left {
+  pointer-events: none;
+}
+.comment-item.comment-nav-leave-left {
+  opacity: 0.55;
+  transform: translateX(-12px);
+}
+.comment-item.comment-nav-leave-right {
+  opacity: 0.55;
+  transform: translateX(12px);
+}
+.comment-item.comment-nav-prep-from-right {
+  opacity: 0.65;
+  transform: translateX(14px);
+}
+.comment-item.comment-nav-prep-from-left {
+  opacity: 0.65;
+  transform: translateX(-14px);
+}
 
 .comment-header-row {
   display: flex;
