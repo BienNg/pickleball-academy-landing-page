@@ -36,14 +36,7 @@ const MOCK = {
       timestamp: 13,
       loopEnd: 15,
       text: 'Footwork is bad',
-      frames: [
-        {
-          id: 'fd-2a',
-          ts: 14,
-          note: 'Feet too close together — widen your stance for better balance',
-          marker: { cx: 293, cy: 195, r: 32 },
-        },
-      ],
+      frames: [],
     },
     {
       id: 3,
@@ -387,10 +380,14 @@ function activateComment(id, ts) {
 function applyCommentMediaState(comment) {
   if (!comment) return;
   if (isPlaying) stopPlayback();
-  const defaultMarker = { cx: 295, cy: 130, r: 28 };
-  const marker = comment.frames?.[0]?.marker || defaultMarker;
+  const marker = comment.frames?.[0]?.marker;
   seekToTime(comment.timestamp, false);
-  showFrameAnnotation(marker);
+  if (marker) {
+    showFrameAnnotation(marker);
+  } else {
+    clearTimeout(activeAnnotationTimeout);
+    hideAnnotation();
+  }
   updateLoopRange(comment);
 }
 
@@ -863,33 +860,6 @@ function renderProgressMarkers() {
   });
 }
 
-// ── Composer ───────────────────────────────────────────────────────────
-function handleComposerSend() {
-  const input = $('composerInput');
-  const text = input.value.trim();
-  if (!text) return;
-
-  const newId = MOCK.comments.length + 1;
-  MOCK.comments.push({
-    id: newId,
-    author: 'bien-nguyen',
-    initials: 'B',
-    timestamp: Math.round(currentTime),
-    loopEnd: null,
-    text: text,
-    frames: [],
-  });
-
-  input.value = '';
-  renderComments();
-  renderProgressMarkers();
-  showToast(`Comment added at ${fmt(currentTime)}`);
-  setTimeout(() => {
-    const el = $('comment-' + newId);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 100);
-}
-
 // ── Toast ──────────────────────────────────────────────────────────────
 let toastTimeout = null;
 function showToast(message) {
@@ -932,11 +902,4 @@ document.addEventListener('DOMContentLoaded', () => {
   updateProgressUI();
   initDraggableAnnotation();
   updateCommentsNavMeta();
-
-  $('composerInput')?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleComposerSend();
-    }
-  });
 });

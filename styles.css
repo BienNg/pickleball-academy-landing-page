@@ -542,7 +542,7 @@ body {
 .comments-scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 4px 8px 80px;
+  padding: 4px 8px 16px;
   background: #fff;
 }
 .comments-scroll::-webkit-scrollbar { width: 0; }
@@ -1046,54 +1046,6 @@ body {
 .toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(-4px);
-}
-
-/* ─── Add Comment Composer ─── */
-.composer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-top: 1px solid var(--border-light);
-  padding: 10px 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 10;
-}
-.composer-input {
-  flex: 1;
-  border: 1.5px solid var(--border);
-  border-radius: 20px;
-  padding: 8px 14px;
-  font-size: 14px;
-  color: var(--text-primary);
-  outline: none;
-  transition: border-color 0.15s;
-  background: var(--bg-card);
-}
-.composer-input:focus { border-color: var(--primary); }
-.composer-input::placeholder { color: var(--text-muted); }
-
-.composer-send {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--primary);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.1s;
-  flex-shrink: 0;
-}
-.composer-send:hover { background: var(--primary-hover); }
-.composer-send:active { background: var(--primary-active); }
-.composer-send:disabled {
-  background: var(--border);
-  cursor: default;
 }
 
 /* ─── Timestamp arrow (loop range) ─── */
