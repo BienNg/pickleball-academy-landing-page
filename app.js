@@ -110,11 +110,6 @@ const MOCK = {
       ],
     },
   },
-  examples: [
-    { name: 'Forehand Dink – Professional Form', desc: 'Stable head, bent knees, compact swing', color: '#3a7d5a' },
-    { name: 'Head Stability Drill', desc: 'Keep head level throughout the stroke', color: '#5b8675' },
-    { name: 'Reach Correction Exercise', desc: 'Let the ball come to you, don\'t reach', color: '#8FB9A8' },
-  ],
 };
 
 // ── State ──────────────────────────────────────────────────────────────
@@ -427,15 +422,6 @@ function viewFrame(frameId) {
   $$('.frame-card').forEach((el) => el.classList.remove('active-frame'));
   const card = document.querySelector(`[data-frame-id="${frameId}"]`);
   if (card) card.classList.add('active-frame');
-
-  updateAnnotationCircle($('modalCircle'), frame.marker);
-  $('viewFrameModalTitle').textContent = `Frame Detail [${fmt(frame.ts)}]`;
-  $('viewFrameModalNote').textContent = frame.note;
-  $('viewFrameModalBadge').innerHTML = `
-    <svg width="10" height="10" viewBox="0 0 24 24" fill="#8FB9A8"><polygon points="5,3 19,12 5,21"/></svg>
-    ${fmt(frame.ts)}
-  `;
-  $('viewFrameModal').classList.add('open');
 }
 
 function findFrame(frameId) {
@@ -525,20 +511,6 @@ function doDeleteComment(id) {
     setTimeout(() => el.remove(), 220);
     showToast('Comment deleted');
   }
-}
-
-// ── Example Modal ──────────────────────────────────────────────────────
-function openExampleModal(commentId) {
-  $('exampleModal').classList.add('open');
-}
-
-function closeExampleModal() {
-  $('exampleModal').classList.remove('open');
-}
-
-function attachExample(name) {
-  closeExampleModal();
-  showToast(`Example attached: ${name}`);
 }
 
 // ── Shot Technique ─────────────────────────────────────────────────────
@@ -653,7 +625,6 @@ function renderComments() {
           <div class="comment-avatar">${c.initials}</div>
           <span class="comment-author">${c.author}</span>
           <div class="comment-actions-group" onclick="event.stopPropagation()">
-            <button class="example-btn" onclick="openExampleModal(${c.id})">+example</button>
             <button class="timestamp-btn" onclick="activateComment(${c.id}, ${c.timestamp})">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="#8FB9A8"><polygon points="5,3 19,12 5,21"/></svg>
               ${tsLabel}
@@ -745,7 +716,6 @@ document.addEventListener('keydown', (e) => {
 
   if (e.key === 'Escape') {
     closeViewFrameModal();
-    closeExampleModal();
     closeMenus();
   }
   if (e.key === ' ' && tag !== 'BUTTON') {

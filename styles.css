@@ -281,46 +281,6 @@ body {
   pointer-events: none;
 }
 
-.video-top-bar {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  display: flex;
-  align-items: center;
-  padding: 10px 12px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, transparent 100%);
-  gap: 8px;
-  z-index: 3;
-}
-
-.video-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--red-danger);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.video-title {
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  flex: 1;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-}
-
-.video-share {
-  color: rgba(255,255,255,0.85);
-  font-size: 11px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
 /* Skip indicator overlay */
 .skip-indicator {
   position: absolute;
@@ -564,23 +524,6 @@ body {
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
-}
-
-.example-btn {
-  padding: 2px 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: #fff;
-  color: var(--text-secondary);
-  font-size: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.1s, background 0.1s;
-}
-.example-btn:hover {
-  border-color: var(--primary);
-  background: rgba(143,185,168,0.06);
-  color: var(--primary);
 }
 
 .timestamp-btn {
@@ -967,84 +910,6 @@ body {
   font-size: 11px;
   font-weight: 700;
   margin-top: 10px;
-}
-
-/* ─── Example Modal ─── */
-.example-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: rgba(0,0,0,0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 16px;
-  pointer-events: none;
-  transition: background 0.22s;
-}
-.example-modal-backdrop.open {
-  background: rgba(0,0,0,0.72);
-  pointer-events: auto;
-}
-.example-modal-card {
-  width: 100%;
-  max-width: 400px;
-  background: #fff;
-  border-radius: 18px;
-  overflow: hidden;
-  transform: scale(0.94) translateY(8px);
-  transition: transform 0.22s cubic-bezier(0.22,0.61,0.36,1), opacity 0.22s;
-  opacity: 0;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
-}
-.example-modal-backdrop.open .example-modal-card {
-  transform: scale(1) translateY(0);
-  opacity: 1;
-}
-
-.example-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-}
-.example-list-desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-.example-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  background: #fff;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  transition: background 0.1s;
-}
-.example-card:hover { background: var(--bg-card); }
-.example-thumb {
-  width: 44px;
-  height: 30px;
-  border-radius: 6px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.example-card-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-.example-card-desc {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-top: 1px;
 }
 
 /* ─── Toast ─── */
