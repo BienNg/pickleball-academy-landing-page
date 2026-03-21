@@ -1,33 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="scroll-smooth" lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Session Detail – Forehand Dink Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PB Academy | Professional Pickleball Coaching</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#1e6a51",
+            "primary-container": "#6fb799",
+            "on-surface": "#111d28",
+            "on-surface-variant": "#3f4944",
+            "on-secondary-container": "#576474",
+            "outline-variant": "#bfc9c2",
+            "surface": "#f7f9ff",
+            "surface-container-low": "#edf4ff",
+            "surface-container-lowest": "#ffffff",
+            "secondary-container": "#d3e1f4"
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          }
+        }
+      }
+    }
+  </script>
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.18/dist/lenis.css"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .bg-kinetic-gradient { background: linear-gradient(135deg, #1e6a51 0%, #6fb799 100%); }
+  </style>
 </head>
-<body>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
 
-  <!-- ─── LANDING PAGE HEADER ─── -->
-  <header class="landing-header">
-    <a href="#" class="landing-logo">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
-      </svg>
-      CourtVision Academy
-    </a>
-    <a href="#waitlist" class="landing-cta" style="padding: 10px 20px; font-size: 14px; box-shadow: none;">Join Waitlist</a>
-  </header>
+  <!-- ─── TopNavBar ─── -->
+  <nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-3xl shadow-[0_20px_40px_rgba(17,29,40,0.06)]">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-8 py-4">
+      <div class="text-2xl font-black tracking-tighter text-slate-900 font-headline">PB Academy</div>
+      <div class="hidden md:flex items-center gap-8">
+        <a class="font-headline font-bold text-sm tracking-tight text-slate-600 hover:text-emerald-500 transition-colors" href="#analytics">Analytics</a>
+        <a class="font-headline font-bold text-sm tracking-tight text-slate-600 hover:text-emerald-500 transition-colors" href="#roadmap">Roadmap</a>
+        <a class="font-headline font-bold text-sm tracking-tight text-slate-600 hover:text-emerald-500 transition-colors" href="#lessons">Lessons</a>
+      </div>
+      <button class="bg-kinetic-gradient text-white px-6 py-2.5 rounded-full font-headline font-bold text-sm tracking-tight hover:scale-105 transition-transform duration-200 active:scale-95">Join Waitlist</button>
+    </div>
+  </nav>
 
-  <!-- ─── HERO SECTION ─── -->
-  <section class="landing-hero">
-    <h1 class="landing-headline">See exactly what to fix in your pickleball game.</h1>
-    <p class="landing-subheadline">Your app turns match and practice videos into time-coded coach feedback, skill roadmaps, and performance analytics so you know exactly what to improve and how to improve it.</p>
-    <div class="landing-hero-ctas">
-      <a href="#demo" class="landing-cta">Experience the Platform</a>
-      <a href="#waitlist" class="landing-cta landing-cta-secondary">Join the Waitlist</a>
+  <!-- ─── Hero Section (like-for-like from academy_pro_dashboard) ─── -->
+  <main class="pt-24">
+  <section class="relative overflow-hidden px-8 py-20 md:py-32">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="z-10">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-xs font-bold tracking-widest uppercase mb-6">ACADEMY PRO EARLY ACCESS</span>
+        <h1 class="font-headline text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-on-surface mb-8">
+          Stop Guessing.<br/>
+          <span class="text-primary italic">Start Improving.</span>
+        </h1>
+        <p class="text-xl text-on-surface-variant max-w-lg mb-10 leading-relaxed">
+          The first data-driven pickleball academy. We turn your match footage into a personalized growth roadmap using elite coaching frameworks.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <button class="bg-kinetic-gradient text-white px-8 py-4 rounded-full font-headline font-bold text-lg hover:scale-105 transition-transform shadow-xl">Reserve Your Spot</button>
+          <button class="border border-outline-variant text-primary px-8 py-4 rounded-full font-headline font-bold text-lg hover:bg-surface-container-low transition-colors">Watch Demo</button>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="absolute -top-20 -right-20 w-96 h-96 bg-primary-container/20 blur-[100px] rounded-full"></div>
+        <div class="relative bg-surface-container-lowest rounded-3xl p-4 shadow-2xl overflow-hidden transform lg:rotate-2 hover:rotate-0 transition-transform duration-700">
+          <img class="w-full rounded-2xl aspect-[4/3] object-cover" alt="Professional pickleball player in a dynamic action shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCshTbWxfdgL8BhQMCo_EAwdEX1Pm6yR7rA88_iR_s3KcRZJWNY1cojnV8ds6agUxVxi-_YJvOpBun2rBMRYjMXZN1Lpe00brBhYrkLuJaeybTJ7qQbIaArHzEyTt_KzF2mWyU4Yl_NYXIrtEXLEX77-GPg6owgM1D2aplZh4sQcmopa86HxH8v-4NCnEVaxUtfDluK4jyDlgcfzAdXTzxMxI8Ypum0oPMbKtIy6yLMScGGtP8GAN-sANHdpqLgRaiOvgZab6RQeOY"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8">
+            <div class="flex items-center gap-4 text-white">
+              <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+              </div>
+              <div>
+                <p class="font-bold">Session Analysis</p>
+                <p class="text-sm opacity-80">Elite Training Module #042</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -293,6 +355,8 @@
       </form>
     </div>
   </section>
+
+  </main>
 
   <!-- ─── FOOTER ─── -->
   <footer class="landing-footer">
