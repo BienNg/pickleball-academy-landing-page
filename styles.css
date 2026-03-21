@@ -164,6 +164,169 @@ body {
   color: #fff;
   line-height: 1.45;
 }
+/* ─── See the Difference (Timeline) Section ─── */
+.see-difference-section {
+  padding: 8rem 0;
+  background: #edf4ff;
+}
+.see-difference-header-wrap {
+  margin-bottom: 5rem;
+}
+.see-difference-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.see-difference-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #111d28;
+  line-height: 1.1;
+  margin: 0;
+}
+.see-difference-subtitle {
+  font-family: "Inter", sans-serif;
+  margin: 1.5rem 0 0;
+  font-size: 1.25rem;
+  color: #3f4944;
+  font-style: italic;
+  max-width: 42rem;
+  line-height: 1.5;
+}
+.see-difference-timeline-wrap {
+  position: relative;
+  width: 100%;
+}
+.see-difference-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(191, 201, 194, 0.3);
+  z-index: 0;
+}
+.see-difference-cards {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  gap: 3rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.see-difference-cards::-webkit-scrollbar {
+  display: none;
+}
+.see-difference-card-item {
+  flex-shrink: 0;
+  width: 20rem;
+  position: relative;
+  z-index: 10;
+}
+.see-difference-card-item.see-difference-card-low {
+  padding-top: 3rem;
+}
+.see-difference-card {
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 40px rgba(17, 29, 40, 0.06);
+  border: 1px solid rgba(191, 201, 194, 0.1);
+}
+.see-difference-card-light {
+  background: #ffffff;
+}
+.see-difference-card-dark {
+  background: #1e6a51;
+  box-shadow: 0 20px 40px rgba(30, 106, 81, 0.2);
+  border-color: transparent;
+}
+.see-difference-card-label {
+  font-family: "Inter", sans-serif;
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #1e6a51;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.see-difference-card-label-dark {
+  color: #a8f2d1;
+}
+.see-difference-card-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111d28;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+.see-difference-card-title-dark {
+  color: #ffffff;
+}
+.see-difference-card-desc {
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  color: #3f4944;
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+}
+.see-difference-card-desc-dark {
+  color: rgba(255, 255, 255, 0.8);
+}
+.see-difference-progress-track {
+  height: 4px;
+  background: #dde9fa;
+  width: 100%;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.see-difference-progress-track-dark {
+  background: rgba(255, 255, 255, 0.2);
+}
+.see-difference-progress-fill {
+  height: 100%;
+  background: #6fb799;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+.see-difference-progress-fill-dark {
+  background: #ffffff;
+}
+.see-difference-dot {
+  position: absolute;
+  top: 50%;
+  left: -0.5rem;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1e6a51;
+  box-shadow: 0 0 0 8px rgba(30, 106, 81, 0.1);
+  z-index: 2;
+}
+
+@media (max-width: 999px) {
+  .see-difference-section {
+    padding: 4rem 0;
+  }
+  .see-difference-header {
+    margin-bottom: 3rem;
+  }
+  .see-difference-cards {
+    gap: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .see-difference-card-item {
+    width: 17rem;
+  }
+}
+
 .features-section {
   padding: 100px 20px;
   max-width: 1100px;
