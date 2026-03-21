@@ -18,14 +18,17 @@
       </svg>
       CourtVision Academy
     </a>
-    <a href="#demo" class="landing-cta" style="padding: 10px 20px; font-size: 14px; box-shadow: none;">Try Demo</a>
+    <a href="#waitlist" class="landing-cta" style="padding: 10px 20px; font-size: 14px; box-shadow: none;">Join Waitlist</a>
   </header>
 
   <!-- ─── HERO SECTION ─── -->
   <section class="landing-hero">
     <h1 class="landing-headline">See exactly what to fix in your pickleball game.</h1>
     <p class="landing-subheadline">Your app turns match and practice videos into time-coded coach feedback, skill roadmaps, and performance analytics so you know exactly what to improve and how to improve it.</p>
-    <a href="#demo" class="landing-cta">Experience the Platform</a>
+    <div class="landing-hero-ctas">
+      <a href="#demo" class="landing-cta">Experience the Platform</a>
+      <a href="#waitlist" class="landing-cta landing-cta-secondary">Join the Waitlist</a>
+    </div>
   </section>
 
   <!-- ─── DEMO SECTION (split editorial card, kinetic-style) ─── -->
@@ -273,6 +276,21 @@
       </div>
       <h4 class="feature-title">Personalized Roadmaps</h4>
       <p class="feature-desc">Turn feedback into action. Get a clear, personalized improvement path tailored to your specific strengths and weaknesses.</p>
+    </div>
+  </section>
+
+  <!-- ─── WAITLIST CTA ─── -->
+  <section class="waitlist-section" id="waitlist">
+    <div class="waitlist-inner">
+      <h2 class="waitlist-title">Join the Waitlist</h2>
+      <p class="waitlist-subtitle">Be the first to know when CourtVision Academy launches. Enter your details below and we'll reach out.</p>
+      <form class="waitlist-form" id="waitlistForm" novalidate>
+        <div class="waitlist-fields">
+          <input type="text" name="name" id="waitlistName" class="waitlist-input" placeholder="Your name" required autocomplete="name"/>
+          <input type="tel" name="phone" id="waitlistPhone" class="waitlist-input" placeholder="Phone number" required autocomplete="tel"/>
+        </div>
+        <button type="submit" class="waitlist-submit">Join Waitlist</button>
+      </form>
     </div>
   </section>
 

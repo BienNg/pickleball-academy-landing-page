@@ -38,6 +38,15 @@ const MOCK = {
       text: "Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot",
       frames: [],
     },
+    {
+      id: 3,
+      author: 'bien-nguyen',
+      initials: 'B',
+      timestamp: 20,
+      loopEnd: null,
+      text: 'Focus on keeping your paddle face angled slightly up for a softer dink.',
+      frames: [],
+    },
   ],
   technique: {
     subCategories: [
@@ -71,6 +80,26 @@ const MOCK = {
   },
 };
 
+// Demo copy per slide (slide 1 = no comment, slides 2–4 = comments 1–3)
+const DEMO_COPY = [
+  {
+    title: 'Interactive Coaching Demo',
+    lead: 'Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Use the comment arrows to step through coach notes, or click the timeline to jump straight to a moment.',
+  },
+  {
+    title: 'On-Screen Annotations',
+    lead: 'See the red circle highlight exactly where the coach is pointing—head position, contact point, and follow-through. Step through each note with the arrows to see frame-by-frame feedback.',
+  },
+  {
+    title: 'Shot Technique Breakdown',
+    lead: 'Get detailed analysis of your forehand dink. Track head stability, paddle angle, and weight transfer with expert feedback. Navigate between coaching moments using the arrows or timeline markers.',
+  },
+  {
+    title: 'Precision Feedback',
+    lead: 'Focus on the details. Each coaching note links to the exact moment in your footage. Use the arrows to discover how small adjustments improve your game.',
+  },
+];
+
 // ── State ──────────────────────────────────────────────────────────────
 let DURATION = MOCK.session.duration;
 let currentTime = 0;
@@ -78,6 +107,7 @@ let isPlaying = false;
 let playInterval = null;
 let activeCommentId = null;
 let visibleCommentIndex = -1;
+let demoSlideIndex = 0; // 0 = no comment, 1–3 = comments 0–2
 let commentCarouselAnimating = false;
 let activeAnnotationTimeout = null;
 let activeFrameId = null;
@@ -356,20 +386,15 @@ function onAnnotationDragEnd() {
 function activateComment(id, ts) {
   const idx = MOCK.comments.findIndex((c) => c.id === id);
   if (idx < 0) return;
-  showCommentAtIndex(idx, { instant: true, withMedia: true });
+  showDemoSlide(idx + 1, { instant: true, withMedia: true });
 }
 
 function applyCommentMediaState(comment) {
   if (!comment) return;
   if (isPlaying) stopPlayback();
-  const marker = comment.frames?.[0]?.marker;
   seekToTimeUnlessAlreadyAt(comment.timestamp);
-  if (marker) {
-    showFrameAnnotation(marker);
-  } else {
-    clearTimeout(activeAnnotationTimeout);
-    hideAnnotation();
-  }
+  clearTimeout(activeAnnotationTimeout);
+  hideAnnotation();
   updateLoopRange(comment);
 }
 
@@ -393,9 +418,12 @@ function syncCommentFocusability() {
   });
 }
 
+const DEMO_TOTAL_SLIDES = MOCK.comments.length + 1;
+
 function clearCommentListState() {
   visibleCommentIndex = -1;
   activeCommentId = null;
+  demoSlideIndex = 0;
   $$('.comment-item').forEach((el) => {
     el.classList.remove('active');
     stripCommentNavClasses(el);
@@ -403,92 +431,116 @@ function clearCommentListState() {
   updateLoopRange(null);
   hideAnnotation();
   updateCommentsNavMeta();
+  updateDemoCopy(0);
   syncCommentFocusability();
 }
 
 function updateCommentsNavMeta() {
   const meta = $('commentsNavMeta');
   if (!meta) return;
-  const n = MOCK.comments.length;
-  if (n === 0) {
+  if (DEMO_TOTAL_SLIDES === 0) {
     meta.textContent = 'No comments';
     return;
   }
-  if (visibleCommentIndex < 0) {
-    meta.textContent = `— / ${n}`;
-    return;
-  }
-  meta.textContent = `${visibleCommentIndex + 1} / ${n}`;
+  meta.textContent = `${demoSlideIndex + 1} / ${DEMO_TOTAL_SLIDES}`;
 }
 
-function applyMediaSelectionInstant(index) {
+function updateDemoCopy(index) {
+  const copy = DEMO_COPY[index];
+  if (!copy) return;
+  const titleEl = document.querySelector('.demo-kinetic-copy .demo-kinetic-title');
+  const leadEl = document.querySelector('.demo-kinetic-copy .demo-kinetic-lead');
+  if (titleEl) titleEl.textContent = copy.title;
+  if (leadEl) leadEl.textContent = copy.lead;
+}
+
+function applyMediaSelectionInstant(commentIndex) {
   $$('.comment-item').forEach((el) => {
     el.classList.remove('active');
     stripCommentNavClasses(el);
   });
-  if (index < 0 || index >= MOCK.comments.length) {
+  if (commentIndex < 0 || commentIndex >= MOCK.comments.length) {
     syncCommentFocusability();
     return;
   }
-  const el = $('comment-' + MOCK.comments[index].id);
+  const el = $('comment-' + MOCK.comments[commentIndex].id);
   if (el) el.classList.add('active');
   syncCommentFocusability();
 }
 
-function applyNavFocusInstant(index) {
+function applyNavFocusInstant(commentIndex) {
   $$('.comment-item').forEach((el) => {
     el.classList.remove('active');
     stripCommentNavClasses(el);
   });
-  if (index < 0 || index >= MOCK.comments.length) {
+  if (commentIndex < 0 || commentIndex >= MOCK.comments.length) {
     syncCommentFocusability();
     return;
   }
-  const el = $('comment-' + MOCK.comments[index].id);
+  const el = $('comment-' + MOCK.comments[commentIndex].id);
   if (el) el.classList.add('comment-nav-focused');
   syncCommentFocusability();
 }
 
-function showCommentAtIndex(index, options = {}) {
+function showDemoSlide(slideIndex, options = {}) {
   const { instant = true, enterDirection = 1, withMedia = false } = options;
-  const n = MOCK.comments.length;
-  if (n === 0) return;
+  const total = DEMO_TOTAL_SLIDES;
+  if (total === 0) return;
 
-  if (index < 0 || index >= n) {
+  if (slideIndex < 0 || slideIndex >= total) {
     clearCommentListState();
     return;
   }
 
-  const comment = MOCK.comments[index];
-  const prevIdx = visibleCommentIndex;
+  const prevSlide = demoSlideIndex;
+  const prevCommentIdx = visibleCommentIndex;
+  demoSlideIndex = slideIndex;
+  const commentIndex = slideIndex === 0 ? -1 : slideIndex - 1;
+
+  if (slideIndex === 0) {
+    activeCommentId = null;
+    visibleCommentIndex = -1;
+    hideAnnotation();
+    updateLoopRange(null);
+    $$('.comment-item').forEach((el) => {
+      el.classList.remove('active');
+      stripCommentNavClasses(el);
+    });
+    updateCommentsNavMeta();
+    updateDemoCopy(0);
+    syncCommentFocusability();
+    return;
+  }
+
+  const comment = MOCK.comments[commentIndex];
 
   if (withMedia) {
     activeCommentId = comment.id;
     applyCommentMediaState(comment);
-    visibleCommentIndex = index;
-    applyMediaSelectionInstant(index);
+    visibleCommentIndex = commentIndex;
+    applyMediaSelectionInstant(commentIndex);
     updateCommentsNavMeta();
+    updateDemoCopy(slideIndex);
     const el = $('comment-' + comment.id);
     el && el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     return;
   }
 
-  activeCommentId = null;
-  hideAnnotation();
-  updateLoopRange(null);
-  $$('.comment-item').forEach((el) => el.classList.remove('active'));
+  activeCommentId = comment.id;
+  applyCommentMediaState(comment);
+  visibleCommentIndex = commentIndex;
 
-  if (instant || prevIdx < 0 || prevIdx === index) {
-    visibleCommentIndex = index;
-    applyNavFocusInstant(index);
+  if (instant || prevSlide < 0 || prevSlide === slideIndex) {
+    applyNavFocusInstant(commentIndex);
     updateCommentsNavMeta();
+    updateDemoCopy(slideIndex);
     const el = $('comment-' + comment.id);
     el && el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     return;
   }
 
   commentCarouselAnimating = true;
-  const oldEl = prevIdx >= 0 ? $('comment-' + MOCK.comments[prevIdx].id) : null;
+  const oldEl = prevCommentIdx >= 0 ? $('comment-' + MOCK.comments[prevCommentIdx].id) : null;
   const newEl = $('comment-' + comment.id);
   const goingForward = enterDirection > 0;
 
@@ -508,8 +560,10 @@ function showCommentAtIndex(index, options = {}) {
         newEl.classList.remove('comment-nav-prep-from-right', 'comment-nav-prep-from-left');
         newEl.classList.add('comment-nav-focused');
       }
-      visibleCommentIndex = index;
+      applyCommentMediaState(comment);
+      applyNavFocusInstant(commentIndex);
       updateCommentsNavMeta();
+      updateDemoCopy(slideIndex);
       syncCommentFocusability();
       newEl && newEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       setTimeout(() => {
@@ -524,20 +578,13 @@ function showCommentAtIndex(index, options = {}) {
 }
 
 function stepCommentCarousel(delta) {
-  const n = MOCK.comments.length;
-  if (n === 0 || commentCarouselAnimating) return;
+  if (DEMO_TOTAL_SLIDES === 0 || commentCarouselAnimating) return;
 
-  const prev = visibleCommentIndex;
-  let next;
-  if (prev < 0) {
-    next = delta > 0 ? 0 : n - 1;
-  } else {
-    next = (prev + delta + n) % n;
-  }
-  if (prev >= 0 && next === prev) return;
+  const next = (demoSlideIndex + delta + DEMO_TOTAL_SLIDES) % DEMO_TOTAL_SLIDES;
+  if (next === demoSlideIndex) return;
 
   const enterDirection = delta > 0 ? 1 : -1;
-  showCommentAtIndex(next, { instant: false, enterDirection, withMedia: false });
+  showDemoSlide(next, { instant: false, enterDirection, withMedia: next > 0 });
 }
 
 function refreshCommentListAfterRender() {
@@ -549,15 +596,20 @@ function refreshCommentListAfterRender() {
     const idx = MOCK.comments.findIndex((c) => c.id === activeCommentId);
     if (idx >= 0) {
       visibleCommentIndex = idx;
+      demoSlideIndex = idx + 1;
       const el = $('comment-' + activeCommentId);
       if (el) el.classList.add('active');
     }
   } else if (visibleCommentIndex >= 0 && visibleCommentIndex < MOCK.comments.length) {
+    demoSlideIndex = visibleCommentIndex + 1;
     const c = MOCK.comments[visibleCommentIndex];
     const el = $('comment-' + c.id);
     if (el) el.classList.add('comment-nav-focused');
+  } else {
+    demoSlideIndex = 0;
   }
   updateCommentsNavMeta();
+  updateDemoCopy(demoSlideIndex);
   syncCommentFocusability();
 }
 
@@ -820,13 +872,47 @@ function initSmoothPageScroll() {
   });
 }
 
+// ── Waitlist Form ──────────────────────────────────────────────────────
+function initWaitlistForm() {
+  const form = document.getElementById('waitlistForm');
+  if (!form) return;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nameInput = form.querySelector('#waitlistName');
+    const phoneInput = form.querySelector('#waitlistPhone');
+    nameInput?.classList.remove('error');
+    phoneInput?.classList.remove('error');
+    const name = (nameInput?.value || '').trim();
+    const phone = (phoneInput?.value || '').trim();
+    let valid = true;
+    if (!name) {
+      nameInput?.classList.add('error');
+      valid = false;
+    }
+    if (!phone) {
+      phoneInput?.classList.add('error');
+      valid = false;
+    }
+    if (!valid) {
+      showToast('Please enter your name and phone number.');
+      return;
+    }
+    // TODO: Send to backend (e.g. Formspree, Netlify Forms, or your API)
+    showToast(`Thanks, ${name}! You're on the waitlist. We'll be in touch soon.`);
+    form.reset();
+  });
+}
+
 // ── Init ───────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initSmoothPageScroll();
+  initWaitlistForm();
   renderComments();
   renderProgressMarkers();
   renderTechniqueItems();
   updateProgressUI();
   initDraggableAnnotation();
+  // Start with slide 1 (no comment selected) — "1 / 4"
   updateCommentsNavMeta();
+  updateDemoCopy(0);
 });
