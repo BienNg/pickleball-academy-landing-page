@@ -435,6 +435,9 @@ function updateCommentsNavMeta() {
     return;
   }
   meta.textContent = `${demoSlideIndex + 1} / ${DEMO_TOTAL_SLIDES}`;
+
+  const arrow = document.querySelector('.demo-mockup-arrow');
+  if (arrow) arrow.classList.toggle('visible', demoSlideIndex === 1);
 }
 
 function updateDemoCopy(index) {

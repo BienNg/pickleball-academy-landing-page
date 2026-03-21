@@ -216,6 +216,30 @@ body {
   align-items: center;
   position: relative;
 }
+.demo-visual-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.demo-mockup-arrow {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  width: 160px;
+  overflow: hidden;
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.demo-mockup-arrow.visible {
+  clip-path: inset(0 0 0 0);
+}
+.demo-mockup-arrow img {
+  display: block;
+  width: 160px;
+  height: 94px;
+  object-fit: contain;
+}
 .demo-kinetic-title {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
