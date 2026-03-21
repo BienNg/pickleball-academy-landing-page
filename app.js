@@ -35,41 +35,7 @@ const MOCK = {
       initials: 'B',
       timestamp: 13,
       loopEnd: 15,
-      text: 'Footwork is bad',
-      frames: [],
-    },
-    {
-      id: 3,
-      author: 'bien-nguyen',
-      initials: 'B',
-      timestamp: 43,
-      loopEnd: null,
-      text: 'Dont reach for the ball. Let it come to you and use your [[shot:Forehand Dink]] motion',
-      frames: [],
-    },
-    {
-      id: 4,
-      author: 'bien-nguyen',
-      initials: 'B',
-      timestamp: 87,
-      loopEnd: null,
-      text: 'Bend your knees more — weight should be forward on your toes during the [[shot:Dink]]',
-      frames: [
-        {
-          id: 'fd-4a',
-          ts: 87,
-          note: 'Knee bend — ideally at 120° angle for stable base',
-          marker: { cx: 295, cy: 190, r: 30 },
-        },
-      ],
-    },
-    {
-      id: 5,
-      author: 'bien-nguyen',
-      initials: 'B',
-      timestamp: 135,
-      loopEnd: 140,
-      text: 'Good paddle angle here! Keep this up. Notice the compact [[shot:Follow-through]]',
+      text: "Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot",
       frames: [],
     },
   ],
@@ -113,7 +79,6 @@ let playInterval = null;
 let activeCommentId = null;
 let visibleCommentIndex = -1;
 let commentCarouselAnimating = false;
-let openMenuId = null;
 let activeAnnotationTimeout = null;
 let activeFrameId = null;
 let activeTechSubTab = 'normal';
@@ -177,11 +142,17 @@ function onPlayerStateChange(event) {
     isPlaying = true;
     setPlayIcons(true);
     startProgressSync();
-  } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.ENDED) {
+  } else if (state === YT.PlayerState.PAUSED) {
     isPlaying = false;
     setPlayIcons(false);
     stopProgressSync();
     syncTimeFromPlayer();
+  } else if (state === YT.PlayerState.ENDED) {
+    stopProgressSync();
+    ytPlayer.seekTo(0, true);
+    currentTime = 0;
+    updateProgressUI();
+    ytPlayer.playVideo();
   }
 }
 
@@ -271,6 +242,17 @@ function seekToTime(t, showAnn) {
   if (ytReady) ytPlayer.seekTo(currentTime, true);
   updateProgressUI();
   if (showAnn) showFrameAnnotation();
+}
+
+/** Skip ytPlayer.seekTo when playhead is already at `target` (avoids redundant jump while paused). */
+function seekToTimeUnlessAlreadyAt(target) {
+  const t = ytReady ? ytPlayer.getCurrentTime() : currentTime;
+  if (Math.abs(t - target) > 0.15) {
+    seekToTime(target, false);
+  } else {
+    currentTime = Math.max(0, Math.min(DURATION, target));
+    updateProgressUI();
+  }
 }
 
 function seekFromBar(e) {
@@ -381,7 +363,7 @@ function applyCommentMediaState(comment) {
   if (!comment) return;
   if (isPlaying) stopPlayback();
   const marker = comment.frames?.[0]?.marker;
-  seekToTime(comment.timestamp, false);
+  seekToTimeUnlessAlreadyAt(comment.timestamp);
   if (marker) {
     showFrameAnnotation(marker);
   } else {
@@ -601,7 +583,7 @@ function viewFrame(frameId) {
   const frame = findFrame(frameId);
   if (!frame) return;
   if (isPlaying) stopPlayback();
-  seekToTime(frame.ts, false);
+  seekToTimeUnlessAlreadyAt(frame.ts);
   showFrameAnnotation(frame.marker);
 
   activeFrameId = frameId;
@@ -632,71 +614,6 @@ function switchTab(tab) {
   $('tab-shot').classList.toggle('active', !isComments);
   $('commentsArea').style.display = isComments ? 'block' : 'none';
   $('shotTechniquePanel').classList.toggle('visible', !isComments);
-}
-
-// ── Context Menus ──────────────────────────────────────────────────────
-function toggleCtxMenu(menuId, e) {
-  e.stopPropagation();
-  const menu = $(menuId);
-  const isOpen = menu.classList.contains('open');
-  closeMenus();
-  if (!isOpen) {
-    menu.classList.add('open');
-    openMenuId = menuId;
-  }
-}
-
-function closeMenus() {
-  if (openMenuId) {
-    const menu = $(openMenuId);
-    if (menu) menu.classList.remove('open');
-    openMenuId = null;
-  }
-}
-
-document.addEventListener('click', closeMenus);
-
-// ── Comment Actions ────────────────────────────────────────────────────
-function doAddFrameComment(parentId) {
-  closeMenus();
-  if (isPlaying) stopPlayback();
-
-  const overlay = $('frameAnnotation');
-  overlay.classList.add('interactive');
-  const defaultMarker = { cx: 215, cy: 130, r: 28 };
-  updateAnnotationCircle($('annotationCircle'), defaultMarker);
-  showFrameAnnotation(defaultMarker);
-  clearTimeout(activeAnnotationTimeout);
-
-  showToast(`Drag the red circle to annotate at ${fmt(currentTime)}, then click to confirm`);
-
-  const confirmHandler = () => {
-    overlay.classList.remove('interactive');
-    overlay.removeEventListener('dblclick', confirmHandler);
-    const circle = $('annotationCircle');
-    const cx = parseFloat(circle.getAttribute('cx'));
-    const cy = parseFloat(circle.getAttribute('cy'));
-    showToast(`Frame comment added at (${Math.round(cx)}, ${Math.round(cy)})`);
-    activeAnnotationTimeout = setTimeout(hideAnnotation, 3000);
-  };
-  overlay.addEventListener('dblclick', confirmHandler);
-}
-
-function doEditComment(id) {
-  closeMenus();
-  showToast('Edit comment #' + id);
-}
-
-function doDeleteComment(id) {
-  closeMenus();
-  const el = $('comment-' + id);
-  if (el) {
-    el.style.transition = 'opacity 0.2s, transform 0.2s';
-    el.style.opacity = '0';
-    el.style.transform = 'translateX(16px)';
-    setTimeout(() => el.remove(), 220);
-    showToast('Comment deleted');
-  }
 }
 
 // ── Shot Technique ─────────────────────────────────────────────────────
@@ -785,17 +702,11 @@ function renderComments() {
               VIEW FRAME
             </button>
             <div class="ctx-menu-wrapper" onclick="event.stopPropagation()">
-              <button class="frame-card-more"
-                onclick="toggleCtxMenu('ctxmenu-${f.id}', event)" aria-label="More">
+              <button type="button" class="frame-card-more" aria-label="More" aria-disabled="true" tabindex="-1">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="#8E8E93">
                   <circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/>
                 </svg>
               </button>
-              <div id="ctxmenu-${f.id}" class="ctx-menu">
-                <button class="ctx-menu-item" onclick="showToast('Edit frame comment')">Edit</button>
-                <div class="ctx-divider"></div>
-                <button class="ctx-menu-item danger" onclick="showToast('Frame comment deleted')">Delete</button>
-              </div>
             </div>
           </div>
           <div class="frame-card-text">${f.note}</div>
@@ -816,18 +727,11 @@ function renderComments() {
               ${tsLabel}
             </button>
             <div class="ctx-menu-wrapper">
-              <button class="more-btn" onclick="toggleCtxMenu('ctxmenu-c${c.id}', event)" aria-label="More">
+              <button type="button" class="more-btn" aria-label="More" aria-disabled="true" tabindex="-1">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="#8E8E93">
                   <circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/>
                 </svg>
               </button>
-              <div id="ctxmenu-c${c.id}" class="ctx-menu">
-                <button class="ctx-menu-item" onclick="doAddFrameComment(${c.id})">Add Frame Comment</button>
-                <div class="ctx-divider"></div>
-                <button class="ctx-menu-item" onclick="doEditComment(${c.id})">Edit</button>
-                <div class="ctx-divider"></div>
-                <button class="ctx-menu-item danger" onclick="doDeleteComment(${c.id})">Delete</button>
-              </div>
             </div>
           </div>
         </div>
@@ -863,7 +767,6 @@ function renderProgressMarkers() {
 // ── Toast ──────────────────────────────────────────────────────────────
 let toastTimeout = null;
 function showToast(message) {
-  closeMenus();
   const toast = $('toast');
   toast.textContent = message;
   toast.classList.add('show');
@@ -878,7 +781,6 @@ document.addEventListener('keydown', (e) => {
 
   if (e.key === 'Escape') {
     closeViewFrameModal();
-    closeMenus();
   }
   if (e.key === ' ' && tag !== 'BUTTON') {
     e.preventDefault();
@@ -894,8 +796,33 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'x' || e.key === 'X') adjustTime(10);
 });
 
+// ── Smooth page scroll (wheel / trackpad) ─────────────────────────────
+function initSmoothPageScroll() {
+  if (typeof Lenis === 'undefined') return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const lenis = new Lenis({ autoRaf: true, smoothWheel: true, lerp: 0.12 });
+
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      if (!href || href === '#') {
+        e.preventDefault();
+        lenis.scrollTo(0);
+        return;
+      }
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        lenis.scrollTo(target);
+      }
+    });
+  });
+}
+
 // ── Init ───────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  initSmoothPageScroll();
   renderComments();
   renderProgressMarkers();
   renderTechniqueItems();
