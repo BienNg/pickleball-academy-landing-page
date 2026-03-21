@@ -38,15 +38,6 @@ const MOCK = {
       text: "Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot",
       frames: [],
     },
-    {
-      id: 3,
-      author: 'bien-nguyen',
-      initials: 'B',
-      timestamp: 20,
-      loopEnd: null,
-      text: 'Focus on keeping your paddle face angled slightly up for a softer dink.',
-      frames: [],
-    },
   ],
   technique: {
     subCategories: [
@@ -418,12 +409,13 @@ function syncCommentFocusability() {
   });
 }
 
-const DEMO_TOTAL_SLIDES = MOCK.comments.length + 1;
+const DEMO_TOTAL_SLIDES = MOCK.comments.length + 2; // +1 intro, +1 shot technique
 
 function clearCommentListState() {
   visibleCommentIndex = -1;
   activeCommentId = null;
   demoSlideIndex = 0;
+  switchTab('comments');
   $$('.comment-item').forEach((el) => {
     el.classList.remove('active');
     stripCommentNavClasses(el);
@@ -482,6 +474,8 @@ function applyNavFocusInstant(commentIndex) {
   syncCommentFocusability();
 }
 
+const SHOT_TECHNIQUE_SLIDE_INDEX = MOCK.comments.length + 1;
+
 function showDemoSlide(slideIndex, options = {}) {
   const { instant = true, enterDirection = 1, withMedia = false } = options;
   const total = DEMO_TOTAL_SLIDES;
@@ -495,11 +489,12 @@ function showDemoSlide(slideIndex, options = {}) {
   const prevSlide = demoSlideIndex;
   const prevCommentIdx = visibleCommentIndex;
   demoSlideIndex = slideIndex;
-  const commentIndex = slideIndex === 0 ? -1 : slideIndex - 1;
+  const commentIndex = slideIndex === 0 || slideIndex === SHOT_TECHNIQUE_SLIDE_INDEX ? -1 : slideIndex - 1;
 
   if (slideIndex === 0) {
     activeCommentId = null;
     visibleCommentIndex = -1;
+    switchTab('comments');
     hideAnnotation();
     updateLoopRange(null);
     $$('.comment-item').forEach((el) => {
@@ -512,6 +507,23 @@ function showDemoSlide(slideIndex, options = {}) {
     return;
   }
 
+  if (slideIndex === SHOT_TECHNIQUE_SLIDE_INDEX) {
+    activeCommentId = null;
+    visibleCommentIndex = -1;
+    switchTab('shot');
+    hideAnnotation();
+    updateLoopRange(null);
+    $$('.comment-item').forEach((el) => {
+      el.classList.remove('active');
+      stripCommentNavClasses(el);
+    });
+    updateCommentsNavMeta();
+    updateDemoCopy(2); // "Shot Technique Breakdown" copy
+    syncCommentFocusability();
+    return;
+  }
+
+  switchTab('comments');
   const comment = MOCK.comments[commentIndex];
 
   if (withMedia) {
