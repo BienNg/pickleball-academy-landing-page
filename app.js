@@ -1084,10 +1084,23 @@ function initIntroAnimation() {
   // Set initial state for the intro pill to be perfectly centered and slightly scaled down
   gsap.set(introPill, { xPercent: -50, yPercent: -50, scale: 0.95 });
 
-  // Fade in and scale up the intro pill to 4x in the exact center
+  // Peak scale: cap so the scaled pill fits the viewport (fixed 4x overflows on mobile)
+  const edgePad = 48;
+  const baseW = introPill.offsetWidth || 1;
+  const baseH = introPill.offsetHeight || 1;
+  const peakScale = Math.max(
+    1,
+    Math.min(
+      4,
+      (window.innerWidth - edgePad) / baseW,
+      (window.innerHeight - edgePad) / baseH
+    )
+  );
+
+  // Fade in and scale up the intro pill in the exact center
   gsap.to(introPill, {
     opacity: 1,
-    scale: 4,
+    scale: peakScale,
     duration: 1,
     ease: "power2.out",
     onComplete: () => {
