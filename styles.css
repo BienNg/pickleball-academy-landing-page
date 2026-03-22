@@ -875,6 +875,93 @@ body {
   border: 8px solid #1a1a1a;
 }
 
+/* ─── Splash Screen ─── */
+.app-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #f7f9ff 0%, #edf4ff 50%, #ffffff 100%);
+  padding: 2rem;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+.app-splash.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.app-splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+.app-splash-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+.app-splash-logo-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #1e6a51;
+  line-height: 1;
+}
+.app-splash-logo-academy {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #1a1a1a;
+  text-transform: uppercase;
+}
+.app-splash-tagline {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #576474;
+  margin: 0;
+}
+.app-splash-btn {
+  margin-top: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #1e6a51 0%, #6fb799 100%);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 14px rgba(30, 106, 81, 0.35);
+}
+.app-splash-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(30, 106, 81, 0.4);
+}
+.app-splash-btn:active {
+  transform: scale(0.98);
+}
+
+.app-demo-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+.app-demo-content-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* ─── Video Wrapper ─── */
 .video-wrapper {
   position: relative;

@@ -88,11 +88,6 @@
           <span class="material-symbols-outlined text-2xl group-hover:translate-x-1 transition-transform">play_circle</span>
         </a>
       </div>
-      
-      <div class="mt-24 w-full relative opacity-0 animate-fade-up delay-200">
-        <div class="absolute -inset-10 bg-gradient-to-b from-primary-container/20 to-transparent blur-3xl rounded-full -z-10"></div>
-        <img class="w-full rounded-[2.5rem] shadow-2xl object-cover aspect-[16/9]" alt="Professional pickleball player" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCshTbWxfdgL8BhQMCo_EAwdEX1Pm6yR7rA88_iR_s3KcRZJWNY1cojnV8ds6agUxVxi-_YJvOpBun2rBMRYjMXZN1Lpe00brBhYrkLuJaeybTJ7qQbIaArHzEyTt_KzF2mWyU4Yl_NYXIrtEXLEX77-GPg6owgM1D2aplZh4sQcmopa86HxH8v-4NCnEVaxUtfDluK4jyDlgcfzAdXTzxMxI8Ypum0oPMbKtIy6yLMScGGtP8GAN-sANHdpqLgRaiOvgZab6RQeOY"/>
-      </div>
     </section>
 
 <!-- ─── DEMO SECTION (split editorial card, kinetic-style) ─── -->
@@ -147,6 +142,21 @@
           <div class="demo-visual-inner">
     <!-- ─── APP SHELL ─── -->
     <div class="app-shell" id="appShell">
+
+  <!-- ═══ SPLASH SCREEN ═══ -->
+  <div class="app-splash" id="appSplash">
+    <div class="app-splash-content">
+      <div class="app-splash-logo">
+        <span class="app-splash-logo-text">PB</span>
+        <span class="app-splash-logo-academy">Academy</span>
+      </div>
+      <p class="app-splash-tagline">Interactive Coaching Demo</p>
+      <button type="button" class="app-splash-btn" id="startDemoBtn" onclick="startDemo()">Start Demo</button>
+    </div>
+  </div>
+
+  <!-- ═══ DEMO CONTENT (hidden until Start Demo, but keeps layout) ═══ -->
+  <div class="app-demo-content app-demo-content-hidden" id="appDemoContent">
 
   <!-- ═══ VIDEO PLAYER ═══ -->
   <div class="video-wrapper" id="videoWrapper">
@@ -249,6 +259,8 @@
       <!-- Rendered by JS -->
     </div>
   </div>
+
+  </div><!-- /.app-demo-content -->
 
 </div><!-- /.app-shell -->
             <div class="demo-mockup-arrow" aria-hidden="true">

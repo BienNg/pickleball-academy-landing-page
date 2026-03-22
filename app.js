@@ -112,6 +112,18 @@ let progressRAF = null;
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => document.querySelectorAll(sel);
 
+// ── Splash Screen ───────────────────────────────────────────────────────
+function startDemo() {
+  const splash = $('appSplash');
+  const demoContent = $('appDemoContent');
+  if (!splash || !demoContent) return;
+  splash.classList.add('hidden');
+  demoContent.classList.remove('app-demo-content-hidden');
+  setTimeout(() => {
+    splash.style.display = 'none';
+  }, 450);
+}
+
 // ── Time Helpers ───────────────────────────────────────────────────────
 function fmt(seconds) {
   const s = Math.max(0, Math.floor(seconds));
