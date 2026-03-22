@@ -50,6 +50,21 @@
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
+
+    /* Scroll Animations */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-animate.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .stagger-1 { transition-delay: 100ms; }
+    .stagger-2 { transition-delay: 200ms; }
+    .stagger-3 { transition-delay: 300ms; }
+    .stagger-4 { transition-delay: 400ms; }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-body antialiased selection:bg-primary-container selection:text-white">
@@ -79,7 +94,7 @@
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container">Now in your pocket.</span>
       </h1>
       <p class="text-xl md:text-2xl text-gray-500 max-w-2xl mb-12 font-light tracking-tight leading-relaxed">
-        The first data-driven pickleball academy. We turn your match footage into a personalized growth roadmap using elite coaching frameworks.
+        The first award-winning, data-driven pickleball academy. We turn your match footage into a personalized growth roadmap using elite coaching frameworks.
       </p>
       <div class="flex flex-col sm:flex-row gap-6 items-center">
         <button class="bg-gray-900 text-white px-8 py-4 rounded-full text-lg font-medium hover:scale-105 transition-transform duration-300 shadow-xl">Reserve Your Spot</button>
@@ -90,8 +105,8 @@
       </div>
     </section>
 
-<!-- ─── DEMO SECTION (split editorial card, kinetic-style) ─── -->
-  <section class="demo-container" id="demo">
+    <!-- ─── DEMO SECTION (split editorial card, kinetic-style) ─── -->
+  <section class="demo-container scroll-animate" id="demo">
     <div class="demo-section-inner">
       <div class="demo-kinetic-card">
         <div class="demo-kinetic-aside">
@@ -274,14 +289,14 @@
 
     <!-- ─── WHY IT WORKS (Bento) ─── -->
     <section class="py-32 px-6 max-w-7xl mx-auto" id="why-it-works">
-      <div class="text-center mb-20 opacity-0 animate-fade-up delay-100">
+      <div class="text-center mb-20 scroll-animate">
         <h2 class="text-4xl md:text-6xl font-bold tracking-tighter text-gray-900 mb-6 font-headline">Designed for rapid growth.</h2>
         <p class="text-xl text-gray-500 max-w-2xl mx-auto font-light tracking-tight">Why video-based coaching is scientifically proven to accelerate learning and retention.</p>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[22rem]">
         <!-- Box 1 -->
-        <div class="md:col-span-2 bg-[#fbfbfd] rounded-[2rem] p-10 flex flex-col justify-between overflow-hidden relative group border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+        <div class="md:col-span-2 bg-[#fbfbfd] rounded-[2rem] p-10 flex flex-col justify-between overflow-hidden relative group border border-gray-100 hover:shadow-lg transition-shadow duration-300 scroll-animate stagger-1">
           <div class="z-10 relative">
             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 text-primary">
               <span class="material-symbols-outlined">visibility</span>
@@ -293,7 +308,7 @@
         </div>
         
         <!-- Box 2 -->
-        <div class="bg-[#fbfbfd] rounded-[2rem] p-10 flex flex-col justify-between group border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+        <div class="bg-[#fbfbfd] rounded-[2rem] p-10 flex flex-col justify-between group border border-gray-100 hover:shadow-lg transition-shadow duration-300 scroll-animate stagger-2">
           <div>
             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 text-primary">
               <span class="material-symbols-outlined">speed</span>
@@ -305,7 +320,7 @@
         </div>
         
         <!-- Box 3 -->
-        <div class="bg-[#fbfbfd] rounded-[2rem] p-10 flex flex-col justify-between group border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+        <div class="bg-[#fbfbfd] rounded-[2rem] p-10 flex flex-col justify-between group border border-gray-100 hover:shadow-lg transition-shadow duration-300 scroll-animate stagger-3">
           <div>
             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 text-primary">
               <span class="material-symbols-outlined">psychology</span>
@@ -316,7 +331,7 @@
         </div>
         
         <!-- Box 4 -->
-        <div class="md:col-span-2 bg-[#fbfbfd] rounded-[2rem] p-10 flex flex-col justify-between overflow-hidden relative group border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+        <div class="md:col-span-2 bg-[#fbfbfd] rounded-[2rem] p-10 flex flex-col justify-between overflow-hidden relative group border border-gray-100 hover:shadow-lg transition-shadow duration-300 scroll-animate stagger-4">
           <div class="z-10 relative">
             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 text-primary">
               <span class="material-symbols-outlined">model_training</span>
@@ -330,7 +345,7 @@
 
     <!-- ─── COMPARE SECTION ─── -->
     <section class="py-32 px-6 bg-[#0a0a0a] text-white" id="compare">
-      <div class="max-w-5xl mx-auto">
+      <div class="max-w-5xl mx-auto scroll-animate">
         <h2 class="text-4xl md:text-6xl font-bold tracking-tighter mb-24 font-headline text-center">
           Traditional coaching vs.<br/>
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container">PB Academy.</span>
@@ -384,12 +399,12 @@
 
     <!-- ─── TIMELINE SECTION ─── -->
     <section class="py-32 px-6 max-w-6xl mx-auto" id="roadmap">
-      <div class="text-center mb-24">
+      <div class="text-center mb-24 scroll-animate">
         <h2 class="text-4xl md:text-6xl font-bold tracking-tighter text-gray-900 mb-6 font-headline">The path to mastery.</h2>
         <p class="text-xl text-gray-500 max-w-2xl mx-auto font-light tracking-tight">Your journey from baseline to peak performance, documented in real-time metrics.</p>
       </div>
       
-      <div class="flex flex-col md:flex-row gap-6 relative">
+      <div class="flex flex-col md:flex-row gap-6 relative scroll-animate">
         <!-- Connecting Line -->
         <div class="hidden md:block absolute top-[40%] left-0 w-full h-[2px] bg-gray-100 -z-10"></div>
         
@@ -433,7 +448,7 @@
     </section>
 
     <!-- ─── WAITLIST CTA ─── -->
-    <section class="py-40 px-6 bg-[#fbfbfd] text-center border-t border-gray-100" id="waitlist">
+    <section class="py-40 px-6 bg-[#fbfbfd] text-center border-t border-gray-100 scroll-animate" id="waitlist">
       <div class="max-w-3xl mx-auto">
         <h2 class="text-5xl md:text-7xl font-bold tracking-tighter text-gray-900 mb-6 font-headline">Ready to level up?</h2>
         <p class="text-xl text-gray-500 mb-12 tracking-tight">Be the first to know when PB Academy launches.</p>

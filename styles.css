@@ -1214,7 +1214,7 @@ body {
 /* ─── Comments List ─── */
 .comments-scroll {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding: 4px 8px 16px;
   background: #fff;
 }
