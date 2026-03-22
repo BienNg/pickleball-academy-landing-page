@@ -222,6 +222,13 @@
     <!-- YouTube Player -->
     <div id="ytPlayer" style="position:absolute;inset:0;width:100%;height:100%;"></div>
 
+    <div class="video-loading-overlay visible" id="videoLoadingOverlay" aria-busy="true" role="status">
+      <div class="video-loading-inner">
+        <div class="video-loading-spinner" aria-hidden="true"></div>
+        <span class="video-loading-label">Loading video…</span>
+      </div>
+    </div>
+
     <!-- Skip indicator -->
     <div class="skip-indicator" id="skipIndicator"></div>
 
@@ -575,11 +582,12 @@
 <div class="toast" id="toast"></div>
 
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Flip.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+<!-- app.js must run before iframe_api so onYouTubeIframeAPIReady is defined when the API loads -->
 <script src="app.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>

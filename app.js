@@ -108,6 +108,8 @@ let skipIndicatorTimeout = null;
 let ytPlayer = null;
 let ytReady = false;
 let progressRAF = null;
+let ytRetryCount = 0;
+const YT_MAX_RETRIES = 2;
 
 // ── DOM Helpers ────────────────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
@@ -183,31 +185,94 @@ function applyDemoVideoVolume() {
   }
 }
 
-function onYouTubeIframeAPIReady() {
+function ytPlayerVars() {
+  const origin =
+    typeof location !== 'undefined' &&
+    location.origin &&
+    location.origin !== 'null'
+      ? location.origin
+      : null;
+  return {
+    autoplay: 1,
+    mute: 1,
+    controls: 0,
+    modestbranding: 1,
+    rel: 0,
+    showinfo: 0,
+    iv_load_policy: 3,
+    disablekb: 1,
+    fs: 0,
+    playsinline: 1,
+    ...(origin ? { origin } : {}),
+  };
+}
+
+function showVideoLoading() {
+  const el = $('videoLoadingOverlay');
+  if (!el) return;
+  el.classList.add('visible');
+  el.setAttribute('aria-busy', 'true');
+}
+
+function hideVideoLoading() {
+  const el = $('videoLoadingOverlay');
+  if (!el) return;
+  el.classList.remove('visible');
+  el.setAttribute('aria-busy', 'false');
+}
+
+function destroyYtPlayer() {
+  ytReady = false;
+  const p = ytPlayer;
+  ytPlayer = null;
+  if (p && typeof p.destroy === 'function') {
+    try {
+      p.destroy();
+    } catch (_) {
+      /* ignore */
+    }
+  }
+}
+
+function onPlayerError() {
+  if (ytRetryCount >= YT_MAX_RETRIES) {
+    hideVideoLoading();
+    return;
+  }
+  ytRetryCount++;
+  showVideoLoading();
+  destroyYtPlayer();
+  setTimeout(() => {
+    if (typeof YT === 'undefined' || !YT.Player) return;
+    const mount = $('ytPlayer');
+    if (!mount) return;
+    createYouTubePlayer();
+  }, 600);
+}
+
+function createYouTubePlayer() {
+  if (ytPlayer) return;
+  showVideoLoading();
   ytPlayer = new YT.Player('ytPlayer', {
     videoId: 'qZRiKBCIdFo',
-    playerVars: {
-      autoplay: 1,
-      mute: 1,
-      controls: 0,
-      modestbranding: 1,
-      rel: 0,
-      showinfo: 0,
-      iv_load_policy: 3,
-      disablekb: 1,
-      fs: 0,
-      playsinline: 1,
-    },
+    playerVars: ytPlayerVars(),
     events: {
       onReady: onPlayerReady,
       onStateChange: onPlayerStateChange,
+      onError: onPlayerError,
     },
   });
+}
+
+function onYouTubeIframeAPIReady() {
+  createYouTubePlayer();
 }
 window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
 function onPlayerReady() {
+  ytRetryCount = 0;
   ytReady = true;
+  hideVideoLoading();
   applyDemoVideoVolume();
   DURATION = ytPlayer.getDuration() || MOCK.session.duration;
   updateProgressUI();
