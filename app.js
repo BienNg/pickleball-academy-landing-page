@@ -1051,7 +1051,7 @@ function initPhoneScrollAnimation() {
 
   mm.add("(min-width: 1024px)", () => {
     appShell.style.position = 'relative';
-    appShell.style.zIndex = '50';
+    appShell.style.zIndex = '40';
     
     // Set initial transform so there's no flicker on load
     const phRectInit = heroPlaceholder.getBoundingClientRect();
