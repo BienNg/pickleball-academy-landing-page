@@ -117,8 +117,32 @@ function startDemo() {
   const splash = $('appSplash');
   const demoContent = $('appDemoContent');
   if (!splash || !demoContent) return;
+  
   splash.classList.add('hidden');
+  
+  // Get all top-level children of the demo content that are currently intended to be visible
+  const elementsToAnimate = Array.from(demoContent.children).filter(el => {
+    return window.getComputedStyle(el).display !== 'none';
+  });
+
+  if (typeof gsap !== 'undefined') {
+    gsap.set(elementsToAnimate, { opacity: 0, y: 20 });
+  }
+
   demoContent.classList.remove('app-demo-content-hidden');
+  
+  if (typeof gsap !== 'undefined') {
+    gsap.to(elementsToAnimate, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out",
+      delay: 0.1,
+      clearProps: "all"
+    });
+  }
+
   setTimeout(() => {
     splash.style.display = 'none';
   }, 450);
