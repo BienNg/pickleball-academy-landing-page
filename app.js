@@ -8,6 +8,15 @@ const MOCK = {
   },
   comments: [
     {
+      id: 2,
+      author: 'bien-nguyen',
+      initials: 'B',
+      timestamp: 13,
+      loopEnd: 15,
+      text: "Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot",
+      frames: [],
+    },
+    {
       id: 1,
       author: 'bien-nguyen',
       initials: 'B',
@@ -28,15 +37,6 @@ const MOCK = {
           marker: { cx: 295, cy: 138, r: 26 },
         },
       ],
-    },
-    {
-      id: 2,
-      author: 'bien-nguyen',
-      initials: 'B',
-      timestamp: 13,
-      loopEnd: 15,
-      text: "Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot",
-      frames: [],
     },
   ],
   technique: {
