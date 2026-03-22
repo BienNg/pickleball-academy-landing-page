@@ -967,34 +967,35 @@ function initIntroAnimation() {
   window.scrollTo(0, 0);
   document.body.style.overflow = 'hidden';
 
-  // Fade in and scale up the intro pill in the exact center
+  // Set initial state for the intro pill to be perfectly centered and slightly scaled down
+  gsap.set(introPill, { xPercent: -50, yPercent: -50, scale: 0.95 });
+
+  // Fade in and scale up the intro pill to 4x in the exact center
   gsap.to(introPill, {
     opacity: 1,
-    scale: 1,
+    scale: 4,
     duration: 1,
     ease: "power2.out",
     onComplete: () => {
-      // Stay for 2 seconds
+      // Stay for 1 second
       setTimeout(() => {
         // Ensure we are exactly at top just in case
         window.scrollTo(0, 0);
 
-        // Get starting and ending coordinates
-        const startRect = introPill.getBoundingClientRect();
+        // Get destination coordinates from the invisible heroPill
         const destRect = heroPill.getBoundingClientRect();
+        
+        // Calculate the exact center of where it needs to end up
+        const destCenterX = destRect.left + destRect.width / 2;
+        const destCenterY = destRect.top + destRect.height / 2;
 
-        // Switch introPill to absolute positioning to cleanly animate to destination
-        // We remove the Tailwind classes that center it, and set exact px values
-        introPill.classList.remove('fixed', 'top-1/2', 'left-1/2', '-translate-x-1/2', '-translate-y-1/2');
-        introPill.style.position = 'absolute';
-        introPill.style.left = startRect.left + 'px';
-        introPill.style.top = startRect.top + 'px';
-        introPill.style.transform = 'none';
-
-        // Animate from absolute start to absolute destination
+        // Animate introPill directly to the destination center and scale back to 1
+        // Because xPercent and yPercent are -50, setting left and top to the center coordinates
+        // will perfectly align the centers.
         gsap.to(introPill, {
-          left: destRect.left,
-          top: destRect.top,
+          left: destCenterX,
+          top: destCenterY,
+          scale: 1,
           duration: 1,
           ease: "power3.inOut",
           onComplete: () => {
@@ -1030,7 +1031,7 @@ function initIntroAnimation() {
             initPhoneScrollAnimation();
           }
         });
-      }, 2000); // 2 seconds delay
+      }, 1000); // 1 second delay
     }
   });
 }
