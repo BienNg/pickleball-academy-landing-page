@@ -41,15 +41,47 @@
     
     /* Apple-like animations */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes blurIn {
+      from { opacity: 0; filter: blur(12px); transform: translateY(20px); }
+      to { opacity: 1; filter: blur(0); transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
     .animate-fade-up {
-      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-fade-down {
+      animation: fadeDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-scale-up {
+      animation: scaleUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-blur-in {
+      animation: blurIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-fade-in {
+      animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+    .delay-500 { animation-delay: 500ms; }
+    .delay-600 { animation-delay: 600ms; }
+    .delay-700 { animation-delay: 700ms; }
 
     /* Scroll Animations */
     .scroll-animate {
@@ -70,7 +102,7 @@
 <body class="bg-white text-gray-900 font-body antialiased selection:bg-primary-container selection:text-white">
 
   <!-- TopNavBar -->
-  <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 transition-all duration-300">
+  <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 transition-all duration-300 opacity-0 animate-fade-down delay-200">
     <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
       <div class="text-xl font-bold tracking-tight text-gray-900 font-headline">PB Academy</div>
       <div class="hidden md:flex items-center gap-8">
@@ -84,19 +116,19 @@
 
   <main>
     <!-- HERO SECTION -->
-    <section class="pt-40 pb-80 px-6 flex flex-col items-center text-center max-w-5xl mx-auto opacity-0 animate-fade-up">
-      <div class="relative inline-flex mb-6">
+    <section class="pt-40 pb-80 px-6 flex flex-col items-center text-center max-w-5xl mx-auto">
+      <div class="relative inline-flex mb-6 opacity-0 animate-scale-up delay-100">
         <div class="absolute -inset-1 bg-gradient-to-r from-green-300/40 via-fuchsia-300/40 to-purple-300/40 blur-md rounded-full opacity-80"></div>
-        <h2 class="relative px-5 py-1.5 bg-white/60 backdrop-blur-xl border border-white rounded-full text-[15px] font-medium text-gray-800 shadow-sm tracking-tight">Academy Pro</h2>
+        <h2 class="relative px-5 py-1.5 bg-white/60 backdrop-blur-xl border border-white rounded-full text-[15px] font-medium text-gray-800 shadow-sm tracking-tight">The Game-Changing Academy</h2>
       </div>
-      <h1 class="text-6xl md:text-8xl font-bold tracking-tighter leading-[1.05] text-gray-900 mb-8 font-headline">
+      <h1 class="text-6xl md:text-8xl font-bold tracking-tighter leading-[1.05] text-gray-900 mb-8 font-headline opacity-0 animate-blur-in delay-300">
         Pro-level coaching.<br/>
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container">Now in your pocket.</span>
       </h1>
-      <p class="text-xl md:text-2xl text-gray-500 max-w-2xl mb-12 font-light tracking-tight leading-relaxed">
+      <p class="text-xl md:text-2xl text-gray-500 max-w-2xl mb-12 font-light tracking-tight leading-relaxed opacity-0 animate-fade-up delay-500">
         The first award-winning, data-driven pickleball academy. We turn your match footage into a personalized growth roadmap using elite coaching frameworks.
       </p>
-      <div class="flex flex-col sm:flex-row gap-6 items-center relative z-10">
+      <div class="flex flex-col sm:flex-row gap-6 items-center relative z-10 opacity-0 animate-fade-up delay-700">
         <button class="bg-gray-900 text-white px-8 py-4 rounded-full text-lg font-medium hover:scale-105 transition-transform duration-300 shadow-xl">Reserve Your Spot</button>
         <a href="#demo" class="text-lg font-medium text-gray-900 hover:text-primary transition-colors flex items-center gap-2 group">
           Watch Demo 

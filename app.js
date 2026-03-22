@@ -969,6 +969,15 @@ function initPhoneScrollAnimation() {
       y: phRectInit.top - shellRectInit.top
     });
     
+    // Animate it in on load
+    gsap.from(appShell, {
+      opacity: 0,
+      scale: 0.95,
+      duration: 1.2,
+      delay: 0.8,
+      ease: "power3.out"
+    });
+    
     gsap.fromTo(appShell, 
       {
         x: () => {
