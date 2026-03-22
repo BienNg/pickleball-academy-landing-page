@@ -944,6 +944,97 @@ function initWaitlistForm() {
   });
 }
 
+// ── Intro Animation ──────────────────────────────────────────────────────
+function initIntroAnimation() {
+  if (typeof gsap === 'undefined') return;
+
+  const introPill = document.getElementById('intro-pill');
+  const heroPill = document.getElementById('hero-pill');
+  const introBg = document.getElementById('intro-bg');
+  
+  if (!introPill || !heroPill || !introBg) {
+    // Fallback if elements not found
+    initPhoneScrollAnimation();
+    return;
+  }
+
+  // Prevent scroll restoration jumps on load
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  
+  // Lock scroll and ensure we are at the top initially
+  window.scrollTo(0, 0);
+  document.body.style.overflow = 'hidden';
+
+  // Fade in and scale up the intro pill in the exact center
+  gsap.to(introPill, {
+    opacity: 1,
+    scale: 1,
+    duration: 1,
+    ease: "power2.out",
+    onComplete: () => {
+      // Stay for 2 seconds
+      setTimeout(() => {
+        // Ensure we are exactly at top just in case
+        window.scrollTo(0, 0);
+
+        // Get starting and ending coordinates
+        const startRect = introPill.getBoundingClientRect();
+        const destRect = heroPill.getBoundingClientRect();
+
+        // Switch introPill to absolute positioning to cleanly animate to destination
+        // We remove the Tailwind classes that center it, and set exact px values
+        introPill.classList.remove('fixed', 'top-1/2', 'left-1/2', '-translate-x-1/2', '-translate-y-1/2');
+        introPill.style.position = 'absolute';
+        introPill.style.left = startRect.left + 'px';
+        introPill.style.top = startRect.top + 'px';
+        introPill.style.transform = 'none';
+
+        // Animate from absolute start to absolute destination
+        gsap.to(introPill, {
+          left: destRect.left,
+          top: destRect.top,
+          duration: 1,
+          ease: "power3.inOut",
+          onComplete: () => {
+            
+            // Swap visibility
+            heroPill.style.opacity = '1';
+            introPill.style.display = 'none';
+            
+            // Restore scroll
+            document.body.style.overflow = '';
+            
+            // Fade out the white background overlay
+            gsap.to(introBg, {
+              opacity: 0,
+              duration: 0.5,
+              onComplete: () => {
+                introBg.style.display = 'none';
+              }
+            });
+            
+            // Start the rest of the page animations
+            document.querySelectorAll('[class*="intro-animate-"]').forEach(el => {
+              const classes = Array.from(el.classList);
+              classes.forEach(cls => {
+                if (cls.startsWith('intro-animate-')) {
+                  el.classList.remove(cls);
+                  el.classList.add(cls.replace('intro-', ''));
+                }
+              });
+            });
+
+            // Start phone animation
+            initPhoneScrollAnimation();
+          }
+        });
+      }, 2000); // 2 seconds delay
+    }
+  });
+}
+
 // ── Phone Scroll Animation ───────────────────────────────────────────────
 function initPhoneScrollAnimation() {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
@@ -1016,6 +1107,7 @@ function initPhoneScrollAnimation() {
 
 // ── Init ───────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  initIntroAnimation();
   initSmoothPageScroll();
   initScrollAnimations();
   initWaitlistForm();
@@ -1024,7 +1116,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTechniqueItems();
   updateProgressUI();
   initDraggableAnnotation();
-  initPhoneScrollAnimation();
   // Start with slide 1 (no comment selected) — "1 / 4"
   updateCommentsNavMeta();
   updateDemoCopy(0);
