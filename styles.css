@@ -179,7 +179,7 @@ body {
 /* Demo: outer band matches py-32 px-8 overflow-hidden */
 .demo-container {
   padding: 8rem 2rem;
-  overflow: hidden;
+  overflow: visible;
   background: #f7f9fc;
 }
 .demo-section-inner {

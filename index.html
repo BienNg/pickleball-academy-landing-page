@@ -84,7 +84,7 @@
 
   <main>
     <!-- HERO SECTION -->
-    <section class="pt-40 pb-20 px-6 flex flex-col items-center text-center max-w-5xl mx-auto opacity-0 animate-fade-up">
+    <section class="pt-40 pb-80 px-6 flex flex-col items-center text-center max-w-5xl mx-auto opacity-0 animate-fade-up">
       <div class="relative inline-flex mb-6">
         <div class="absolute -inset-1 bg-gradient-to-r from-green-300/40 via-fuchsia-300/40 to-purple-300/40 blur-md rounded-full opacity-80"></div>
         <h2 class="relative px-5 py-1.5 bg-white/60 backdrop-blur-xl border border-white rounded-full text-[15px] font-medium text-gray-800 shadow-sm tracking-tight">Academy Pro</h2>
@@ -96,20 +96,25 @@
       <p class="text-xl md:text-2xl text-gray-500 max-w-2xl mb-12 font-light tracking-tight leading-relaxed">
         The first award-winning, data-driven pickleball academy. We turn your match footage into a personalized growth roadmap using elite coaching frameworks.
       </p>
-      <div class="flex flex-col sm:flex-row gap-6 items-center">
+      <div class="flex flex-col sm:flex-row gap-6 items-center relative z-10">
         <button class="bg-gray-900 text-white px-8 py-4 rounded-full text-lg font-medium hover:scale-105 transition-transform duration-300 shadow-xl">Reserve Your Spot</button>
         <a href="#demo" class="text-lg font-medium text-gray-900 hover:text-primary transition-colors flex items-center gap-2 group">
           Watch Demo 
           <span class="material-symbols-outlined text-2xl group-hover:translate-x-1 transition-transform">play_circle</span>
         </a>
       </div>
+
+      <!-- Placeholder for the phone mockup to start its animation -->
+      <div class="w-full h-0 relative mt-16 hidden lg:block">
+        <div id="heroPhonePlaceholder" class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[400px] h-[850px]" style="opacity: 0; pointer-events: none;"></div>
+      </div>
     </section>
 
     <!-- ─── DEMO SECTION (split editorial card, kinetic-style) ─── -->
-  <section class="demo-container scroll-animate" id="demo">
+  <section class="demo-container" id="demo">
     <div class="demo-section-inner">
       <div class="demo-kinetic-card">
-        <div class="demo-kinetic-aside">
+        <div class="demo-kinetic-aside scroll-animate">
           <div class="demo-kinetic-copy">
             <h3 class="demo-kinetic-title">Interactive Coaching Demo</h3>
             <p class="demo-kinetic-lead">Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Use the comment arrows to step through coach notes, or click the timeline to jump straight to a moment.</p>
@@ -532,6 +537,8 @@
 
 
 <script src="https://www.youtube.com/iframe_api"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 <script src="app.js"></script>
 </body>

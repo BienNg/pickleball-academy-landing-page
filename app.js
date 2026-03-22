@@ -944,6 +944,67 @@ function initWaitlistForm() {
   });
 }
 
+// ── Phone Scroll Animation ───────────────────────────────────────────────
+function initPhoneScrollAnimation() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  
+  const appShell = document.getElementById('appShell');
+  const heroPlaceholder = document.getElementById('heroPhonePlaceholder');
+  
+  if (!appShell || !heroPlaceholder) return;
+  
+  gsap.registerPlugin(ScrollTrigger);
+
+  let mm = gsap.matchMedia();
+
+  mm.add("(min-width: 1024px)", () => {
+    appShell.style.position = 'relative';
+    appShell.style.zIndex = '50';
+    
+    // Set initial transform so there's no flicker on load
+    const phRectInit = heroPlaceholder.getBoundingClientRect();
+    const shellRectInit = appShell.getBoundingClientRect();
+    gsap.set(appShell, {
+      x: phRectInit.left - shellRectInit.left,
+      y: phRectInit.top - shellRectInit.top
+    });
+    
+    gsap.fromTo(appShell, 
+      {
+        x: () => {
+          const phRect = heroPlaceholder.getBoundingClientRect();
+          const shellRect = appShell.getBoundingClientRect();
+          const currentX = gsap.getProperty(appShell, "x") || 0;
+          return phRect.left - (shellRect.left - currentX);
+        },
+        y: () => {
+          const phRect = heroPlaceholder.getBoundingClientRect();
+          const shellRect = appShell.getBoundingClientRect();
+          const currentY = gsap.getProperty(appShell, "y") || 0;
+          return phRect.top - (shellRect.top - currentY);
+        }
+      },
+      {
+        x: 0,
+        y: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "body",
+          start: "top top",
+          endTrigger: "#demo",
+          end: "top center",
+          scrub: 1.5,
+          invalidateOnRefresh: true
+        }
+      }
+    );
+
+    return () => {
+      gsap.set(appShell, { clearProps: "all" });
+    };
+  });
+}
+
 // ── Init ───────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initSmoothPageScroll();
@@ -954,6 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTechniqueItems();
   updateProgressUI();
   initDraggableAnnotation();
+  initPhoneScrollAnimation();
   // Start with slide 1 (no comment selected) — "1 / 4"
   updateCommentsNavMeta();
   updateDemoCopy(0);
