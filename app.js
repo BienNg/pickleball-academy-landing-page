@@ -95,6 +95,7 @@ const DEMO_COPY = [
 let DURATION = MOCK.session.duration;
 let currentTime = 0;
 let isPlaying = false;
+let demoStarted = false;
 let playInterval = null;
 let activeCommentId = null;
 let visibleCommentIndex = -1;
@@ -114,6 +115,13 @@ const $$ = (sel) => document.querySelectorAll(sel);
 
 // ── Splash Screen ───────────────────────────────────────────────────────
 function startDemo() {
+  demoStarted = true;
+  if (ytReady && ytPlayer && typeof ytPlayer.unMute === 'function') {
+    applyDemoVideoVolume();
+    ytPlayer.unMute();
+    ytPlayer.playVideo();
+  }
+
   const splash = $('appSplash');
   const demoContent = $('appDemoContent');
   if (!splash || !demoContent) return;
@@ -166,10 +174,21 @@ function updateProgressUI() {
 }
 
 // ── YouTube Player ─────────────────────────────────────────────────────
+/** YouTube volume is 0–100; 50 = half of max output. */
+const DEMO_VIDEO_VOLUME = 50;
+
+function applyDemoVideoVolume() {
+  if (ytReady && ytPlayer && typeof ytPlayer.setVolume === 'function') {
+    ytPlayer.setVolume(DEMO_VIDEO_VOLUME);
+  }
+}
+
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('ytPlayer', {
     videoId: 'qZRiKBCIdFo',
     playerVars: {
+      autoplay: 1,
+      mute: 1,
       controls: 0,
       modestbranding: 1,
       rel: 0,
@@ -189,6 +208,7 @@ window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
 function onPlayerReady() {
   ytReady = true;
+  applyDemoVideoVolume();
   DURATION = ytPlayer.getDuration() || MOCK.session.duration;
   updateProgressUI();
 }
@@ -196,6 +216,11 @@ function onPlayerReady() {
 function onPlayerStateChange(event) {
   const state = event.data;
   if (state === YT.PlayerState.PLAYING) {
+    if (!demoStarted) {
+      ytPlayer.pauseVideo();
+      ytPlayer.seekTo(0);
+      return;
+    }
     isPlaying = true;
     setPlayIcons(true);
     startProgressSync();
