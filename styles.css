@@ -230,6 +230,8 @@ body {
   overflow: hidden;
   clip-path: inset(0 0 0 100%);
   transition: clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Nudge up vs. full-mockup vertical center so the curve aims at the first comment row */
+  transform: translateY(-28px);
 }
 .demo-mockup-arrow.visible {
   clip-path: inset(0 0 0 0);
