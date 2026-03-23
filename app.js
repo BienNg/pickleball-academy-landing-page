@@ -1110,18 +1110,29 @@ function initIntroAnimation() {
   // Set initial state for the intro pill to be perfectly centered and slightly scaled down
   gsap.set(introPill, { xPercent: -50, yPercent: -50, scale: 0.95 });
 
-  // Peak scale: cap so the scaled pill fits the viewport (fixed 4x overflows on mobile)
-  const edgePad = 48;
-  const baseW = introPill.offsetWidth || 1;
-  const baseH = introPill.offsetHeight || 1;
-  const peakScale = Math.max(
-    1,
-    Math.min(
-      4,
-      (window.innerWidth - edgePad) / baseW,
-      (window.innerHeight - edgePad) / baseH
-    )
-  );
+  // Peak scale: on mobile we force a visible bump but keep it viewport-safe.
+  const defaultPeakScale = 4;
+  const mobileDefaultPeakScale = 2.5; // Good visible bump without overwhelming small screens
+  const introStartScale = 0.95;
+  const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+  let peakScale = defaultPeakScale;
+
+  if (isMobileViewport) {
+    const baseW = introPill.offsetWidth || 180;
+    const baseH = introPill.offsetHeight || 40;
+    
+    // Leave a small safe area (16px per side)
+    const availableW = window.innerWidth - 32;
+    const availableH = window.innerHeight - 32;
+    
+    const maxFittingScale = Math.min(availableW / baseW, availableH / baseH);
+    
+    // Grow as much as we safely can, up to our desired mobile peak
+    peakScale = Math.min(mobileDefaultPeakScale, maxFittingScale);
+    
+    // Ensure it ALWAY grows visibly from its start scale
+    peakScale = Math.max(introStartScale + 0.35, peakScale);
+  }
 
   // Fade in and scale up the intro pill in the exact center
   gsap.to(introPill, {

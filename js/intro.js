@@ -58,31 +58,30 @@ function initIntroAnimation() {
   gsap.set(introPill, { xPercent: -50, yPercent: -50, scale: 0.95 });
 
   const defaultPeakScale = 4;
+  const mobileDefaultPeakScale = 2.5; // Good visible bump without overwhelming small screens
   const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+  const introStartScale = 0.95;
   let peakScale = defaultPeakScale;
 
   if (isMobileViewport) {
-    const previousVisibility = introPill.style.visibility;
-    const previousOpacity = introPill.style.opacity;
-    const previousScale = gsap.getProperty(introPill, 'scale') || 1;
-
-    // Measure unscaled size, then clamp scale so the animated pill stays on-screen.
-    gsap.set(introPill, { scale: 1 });
-    introPill.style.visibility = 'hidden';
-    introPill.style.opacity = '1';
-
-    const rect = introPill.getBoundingClientRect();
-    const horizontalMargin = 24;
-    const verticalMargin = 24;
-    const maxScaleByWidth = (window.innerWidth - horizontalMargin) / rect.width;
-    const maxScaleByHeight = (window.innerHeight - verticalMargin) / rect.height;
-    const maxFittingScale = Math.min(maxScaleByWidth, maxScaleByHeight);
-
-    peakScale = Math.max(1, Math.min(defaultPeakScale, maxFittingScale));
-
-    introPill.style.visibility = previousVisibility;
-    introPill.style.opacity = previousOpacity;
-    gsap.set(introPill, { scale: previousScale });
+    // offsetWidth/Height ignores CSS transforms (like our scale), 
+    // giving us the exact base dimensions safely.
+    const baseW = introPill.offsetWidth || 180;
+    const baseH = introPill.offsetHeight || 40;
+    
+    // Leave a small safe area (16px per side)
+    const availableW = window.innerWidth - 32;
+    const availableH = window.innerHeight - 32;
+    
+    const maxFittingScale = Math.min(availableW / baseW, availableH / baseH);
+    
+    // Grow as much as we safely can, up to our desired mobile peak
+    peakScale = Math.min(mobileDefaultPeakScale, maxFittingScale);
+    
+    // Ensure it ALWAY grows visibly from its start scale, even if it eats into the margin
+    peakScale = Math.max(introStartScale + 0.35, peakScale);
+  } else {
+    peakScale = defaultPeakScale;
   }
 
   gsap.to(introPill, {
