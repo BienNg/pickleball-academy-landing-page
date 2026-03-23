@@ -57,17 +57,7 @@ function initIntroAnimation() {
 
   gsap.set(introPill, { xPercent: -50, yPercent: -50, scale: 0.95 });
 
-  const edgePad = 48;
-  const baseW = introPill.offsetWidth || 1;
-  const baseH = introPill.offsetHeight || 1;
-  const peakScale = Math.max(
-    1,
-    Math.min(
-      4,
-      (window.innerWidth - edgePad) / baseW,
-      (window.innerHeight - edgePad) / baseH
-    )
-  );
+  const peakScale = 4;
 
   gsap.to(introPill, {
     opacity: 1,
