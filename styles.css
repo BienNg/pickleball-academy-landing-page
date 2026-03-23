@@ -229,9 +229,15 @@ body {
   width: 160px;
   overflow: hidden;
   clip-path: inset(0 0 0 100%);
-  transition: clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
   /* Nudge up vs. full-mockup vertical center so the curve aims at the first comment row */
   transform: translateY(-28px);
+}
+.demo-mockup-arrow.visible.demo-mockup-arrow--aim-comment1 {
+  /* Lower target: comment-1 (with frame cards) sits below the first comment in the list */
+  transform: translateY(108px);
 }
 .demo-mockup-arrow.visible {
   clip-path: inset(0 0 0 0);
@@ -876,6 +882,9 @@ body {
   .demo-mockup-arrow img {
     width: min(160px, 70vw);
     height: auto;
+  }
+  .demo-mockup-arrow.visible.demo-mockup-arrow--aim-comment1 {
+    transform: translateY(36px);
   }
   .app-shell {
     width: 100%;

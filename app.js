@@ -563,7 +563,12 @@ function updateCommentsNavMeta() {
   meta.textContent = `${demoSlideIndex + 1} / ${DEMO_TOTAL_SLIDES}`;
 
   const arrow = document.querySelector('.demo-mockup-arrow');
-  if (arrow) arrow.classList.toggle('visible', demoSlideIndex === 1);
+  if (arrow) {
+    const showMockupArrow = demoSlideIndex === 1 || demoSlideIndex === 2;
+    arrow.classList.toggle('visible', showMockupArrow);
+    /* Third carousel step (3 / N): aim at comment-1 (second list item, frame-detail card). */
+    arrow.classList.toggle('demo-mockup-arrow--aim-comment1', demoSlideIndex === 2);
+  }
 }
 
 function updateDemoCopy(index) {
