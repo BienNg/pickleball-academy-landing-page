@@ -190,6 +190,27 @@ You review your progress and move forward with a refined game.
 
 ---
 
+## Coaching Availability
+
+- **Overline:** Coaching Availability
+- **Headline:** Now available in Ho Chi Minh City 🇻🇳
+- **Subhead:** Join structured, small-group coaching sessions designed for rapid improvement.
+
+**Body copy:**
+We are currently offering in-person coaching sessions in Ho Chi Minh City, Vietnam.
+
+Train alongside players at your level while receiving focused, personalized feedback within a structured system.
+
+**Program structure:**
+- **Small groups:** 3 players per session
+- **Frequency:** 1–2 sessions per week
+- **Duration:** 4-week structured program
+
+**Highlight line:**
+Limited spots available — early members get priority access.
+
+---
+
 ## Waitlist
 
 - **Headline:** Ready to level up?  
