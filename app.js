@@ -1029,16 +1029,28 @@ function initSmoothPageScroll() {
 
 // ── Scroll Animations ──────────────────────────────────────────────────
 function initScrollAnimations() {
+  const observerStartTime = performance.now();
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
+        // Delay initial in-view elements slightly so the hidden state paints first.
+        const isInitialViewportHit = performance.now() - observerStartTime < 400;
+        const reveal = () => entry.target.classList.add('in-view');
+        if (isInitialViewportHit) {
+          setTimeout(reveal, 80);
+        } else {
+          reveal();
+        }
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  }, {
+    threshold: 0.35,
+    rootMargin: '0px 0px -12% 0px'
+  });
 
-  document.querySelectorAll('.scroll-animate, .apple-animate').forEach(el => observer.observe(el));
+  document.querySelectorAll('.scroll-animate, .apple-animate, .apple-animate-card').forEach(el => observer.observe(el));
 }
 
 // ── Waitlist Form ──────────────────────────────────────────────────────
