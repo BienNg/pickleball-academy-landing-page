@@ -55,5 +55,30 @@
   </div>
 </div>
 
+<!-- ─── WAITLIST SUCCESS (Apple-style) ─── -->
+<div class="modal-backdrop waitlist-success-modal" id="waitlistSuccessModal" role="dialog"
+  aria-modal="true" aria-labelledby="waitlistSuccessTitle" aria-describedby="waitlistSuccessMessage"
+  aria-hidden="true">
+  <div class="waitlist-success-card" onclick="event.stopPropagation()">
+    <div class="waitlist-success-icon" aria-hidden="true">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="24" fill="url(#waitlistSuccessGrad)"/>
+        <path d="M14 24.5L21 31.5L34 17" stroke="white" stroke-width="3.2" stroke-linecap="round"
+          stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="waitlistSuccessGrad" x1="12" y1="8" x2="36" y2="40"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#34C759"/>
+            <stop offset="1" stop-color="#30B350"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <h2 class="waitlist-success-title" id="waitlistSuccessTitle">You&rsquo;re on the list</h2>
+    <p class="waitlist-success-message" id="waitlistSuccessMessage"></p>
+    <button type="button" class="waitlist-success-btn" id="waitlistSuccessDismiss">Done</button>
+  </div>
+</div>
+
 <!-- ─── TOAST ─── -->
 <div class="toast" id="toast"></div>

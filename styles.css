@@ -1877,6 +1877,91 @@ body {
   margin-top: 10px;
 }
 
+/* ─── Waitlist success modal (Apple-style) ─── */
+.waitlist-success-modal.modal-backdrop {
+  z-index: 220;
+  padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+}
+.waitlist-success-modal.modal-backdrop.open {
+  background: rgba(28, 28, 30, 0.45);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+}
+.waitlist-success-card {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 40px 28px 28px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 28px;
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.06),
+    0 24px 80px rgba(0, 0, 0, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: scale(0.92) translateY(16px);
+  opacity: 0;
+  transition:
+    transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.waitlist-success-modal.modal-backdrop.open .waitlist-success-card {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+.waitlist-success-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.waitlist-success-icon svg {
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(52, 199, 89, 0.35));
+}
+.waitlist-success-title {
+  font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.waitlist-success-message {
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-bottom: 28px;
+  max-width: 260px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.waitlist-success-btn {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #fff;
+  background: #1c1c1e;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.waitlist-success-btn:hover {
+  background: #3a3a3c;
+}
+.waitlist-success-btn:active {
+  transform: scale(0.98);
+}
+.waitlist-success-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
 /* ─── Toast ─── */
 .toast {
   position: fixed;

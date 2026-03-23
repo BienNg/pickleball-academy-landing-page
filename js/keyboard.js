@@ -3,7 +3,13 @@ document.addEventListener('keydown', (e) => {
   const tag = document.activeElement.tagName;
   if (['INPUT', 'TEXTAREA'].includes(tag)) return;
 
-  if (e.key === 'Escape') closeViewFrameModal();
+  if (e.key === 'Escape') {
+    if ($('waitlistSuccessModal')?.classList.contains('open')) {
+      closeWaitlistSuccessModal();
+      return;
+    }
+    closeViewFrameModal();
+  }
   if (e.key === ' ' && tag !== 'BUTTON') { e.preventDefault(); togglePlay(); }
   if (e.key === 'ArrowLeft') adjustTime(-1 / 30);
   if (e.key === 'ArrowRight') adjustTime(1 / 30);

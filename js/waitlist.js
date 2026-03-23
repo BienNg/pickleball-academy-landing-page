@@ -1,4 +1,27 @@
 // ── Waitlist Form ──────────────────────────────────────────────────────
+const ZAPIER_WAITLIST_HOOK =
+  'https://hooks.zapier.com/hooks/catch/13711388/upqvxww/';
+
+function closeWaitlistSuccessModal() {
+  const modal = $('waitlistSuccessModal');
+  if (!modal?.classList.contains('open')) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function openWaitlistSuccessModal(name) {
+  const modal = $('waitlistSuccessModal');
+  const messageEl = $('waitlistSuccessMessage');
+  if (!modal || !messageEl) return;
+  messageEl.textContent = `Thanks, ${name}. We'll contact you soon with updates.`;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  const dismiss = $('waitlistSuccessDismiss');
+  dismiss?.focus();
+}
+
 function initWaitlistForm() {
   const form = document.getElementById('waitlistForm');
   if (!form) return;
@@ -25,6 +48,10 @@ function initWaitlistForm() {
     experienceInput?.classList.remove('error');
   };
 
+  nameInput?.addEventListener('input', () => {
+    nameInput.classList.remove('error');
+  });
+
   experienceInput?.addEventListener('change', () => {
     experienceInput.classList.remove('error');
   });
@@ -42,6 +69,11 @@ function initWaitlistForm() {
     phoneInput.classList.remove('error');
     phoneInput.closest('.iti')?.classList.remove('iti--error');
   });
+
+  const successModal = $('waitlistSuccessModal');
+  const successDismiss = $('waitlistSuccessDismiss');
+  successDismiss?.addEventListener('click', closeWaitlistSuccessModal);
+  successModal?.addEventListener('click', () => closeWaitlistSuccessModal());
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -82,33 +114,50 @@ function initWaitlistForm() {
       }
 
       if (!valid) {
-        const expMissing = !experience;
-        if (!name && phoneEmpty && expMissing) {
-          showToast('Please enter your name, phone number, and playing experience.');
-        } else if (!name && phoneEmpty) {
-          showToast('Please enter your name and phone number.');
-        } else if (!name && expMissing) {
-          showToast('Please enter your name and how long you have been playing.');
-        } else if (phoneEmpty && expMissing) {
-          showToast('Please enter your phone number and how long you have been playing.');
-        } else if (!name) {
-          showToast('Please enter your name.');
-        } else if (phoneEmpty) {
-          showToast('Please enter your phone number.');
-        } else if (phoneInvalidFormat) {
+        if (phoneInvalidFormat) {
           showToast('Please enter a valid phone number.');
-        } else if (expMissing) {
-          showToast('Please select how long you have been playing pickleball.');
         } else {
-          showToast('Please complete all fields.');
+          showToast(
+            'Please fill in your name, phone number, and playing experience.'
+          );
         }
         return;
       }
 
-      // TODO: send { name, phone: iti ? iti.getNumber() : phoneTrimmed, playingExperience: experience } to backend
-      showToast(`Thanks, ${name}! You're on the waitlist. We'll be in touch soon.`);
-      form.reset();
-      if (iti) iti.setNumber('');
+      const phonePayload = iti ? iti.getNumber() : phoneTrimmed;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+      }
+
+      const payload = {
+        name,
+        phone: phonePayload,
+        playingExperience: experience,
+      };
+
+      fetch(ZAPIER_WAITLIST_HOOK, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: new URLSearchParams(payload),
+      })
+        .then(() => {
+          openWaitlistSuccessModal(name);
+          form.reset();
+          if (iti) iti.setNumber('');
+        })
+        .catch(() => {
+          showToast(
+            'Something went wrong. Please try again in a moment.'
+          );
+        })
+        .finally(() => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('aria-busy');
+          }
+        });
     };
 
     if (iti?.promise) {
