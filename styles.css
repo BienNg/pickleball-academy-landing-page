@@ -176,6 +176,70 @@ body {
 .waitlist-submit:active {
   transform: translateY(0);
 }
+
+/* Waitlist form: validation */
+#waitlistForm #waitlistName.error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 1px rgb(220 38 38 / 0.35);
+}
+
+/* Waitlist: intl-tel-input (country + phone) */
+.waitlist-iti .iti {
+  width: 100%;
+  display: block;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  overflow: visible;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.waitlist-iti .iti:focus-within {
+  border-color: #1e6a51;
+  box-shadow: 0 0 0 1px #1e6a51;
+}
+.waitlist-iti .iti.iti--error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 1px rgb(220 38 38 / 0.35);
+}
+.waitlist-iti .iti__selected-flag {
+  padding-left: 1rem;
+  padding-right: 0.35rem;
+  border-radius: 1rem 0 0 1rem;
+}
+.waitlist-iti .iti__selected-flag:hover,
+.waitlist-iti .iti__selected-flag:focus {
+  background-color: #f3f4f6;
+}
+.waitlist-iti .iti__arrow {
+  border-top-color: #6b7280;
+}
+.waitlist-iti .iti__country-list {
+  z-index: 50;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 40px rgb(0 0 0 / 0.12);
+}
+.waitlist-iti .waitlist-phone-input,
+.waitlist-iti .iti input[type="tel"] {
+  width: 100% !important;
+  min-height: 3.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-right: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  border: none !important;
+  border-radius: 0 1rem 1rem 0 !important;
+  box-shadow: none !important;
+  background: transparent;
+}
+.waitlist-iti .iti input[type="tel"]:focus {
+  outline: none;
+}
+.waitlist-iti .iti__selected-dial-code {
+  font-size: 1.125rem;
+  color: #374151;
+  padding-right: 0.25rem;
+}
 /* Demo: outer band matches py-32 px-8 overflow-hidden */
 .demo-container {
   padding: 8rem 2rem;

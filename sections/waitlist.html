@@ -8,9 +8,11 @@
       <input type="text" name="name" id="waitlistName" placeholder="Your Name"
         class="px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-full text-lg shadow-sm"
         required autocomplete="name" />
-      <input type="tel" name="phone" id="waitlistPhone" placeholder="Phone Number"
-        class="px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-full text-lg shadow-sm"
-        required autocomplete="tel" />
+      <div class="waitlist-iti w-full min-w-0">
+        <input type="tel" name="phone" id="waitlistPhone"
+          class="waitlist-phone-input px-6 py-4 w-full text-lg"
+          autocomplete="tel" />
+      </div>
       <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl text-lg font-medium hover:bg-gray-800 transition-colors whitespace-nowrap shadow-md">Join Waitlist</button>
     </form>
   </div>
