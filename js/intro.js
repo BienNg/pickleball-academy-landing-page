@@ -57,7 +57,33 @@ function initIntroAnimation() {
 
   gsap.set(introPill, { xPercent: -50, yPercent: -50, scale: 0.95 });
 
-  const peakScale = 4;
+  const defaultPeakScale = 4;
+  const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+  let peakScale = defaultPeakScale;
+
+  if (isMobileViewport) {
+    const previousVisibility = introPill.style.visibility;
+    const previousOpacity = introPill.style.opacity;
+    const previousScale = gsap.getProperty(introPill, 'scale') || 1;
+
+    // Measure unscaled size, then clamp scale so the animated pill stays on-screen.
+    gsap.set(introPill, { scale: 1 });
+    introPill.style.visibility = 'hidden';
+    introPill.style.opacity = '1';
+
+    const rect = introPill.getBoundingClientRect();
+    const horizontalMargin = 24;
+    const verticalMargin = 24;
+    const maxScaleByWidth = (window.innerWidth - horizontalMargin) / rect.width;
+    const maxScaleByHeight = (window.innerHeight - verticalMargin) / rect.height;
+    const maxFittingScale = Math.min(maxScaleByWidth, maxScaleByHeight);
+
+    peakScale = Math.max(1, Math.min(defaultPeakScale, maxFittingScale));
+
+    introPill.style.visibility = previousVisibility;
+    introPill.style.opacity = previousOpacity;
+    gsap.set(introPill, { scale: previousScale });
+  }
 
   gsap.to(introPill, {
     opacity: 1,
