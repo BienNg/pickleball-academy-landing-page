@@ -1,3 +1,12 @@
+// ── DEPRECATED ────────────────────────────────────────────────────────
+// This file has been split into the js/ directory for better scalability.
+// It is no longer loaded by index.html. Safe to delete.
+// See: js/data.js, js/state.js, js/utils.js, js/youtube.js, js/playback.js,
+//      js/annotations.js, js/tabs.js, js/technique.js, js/comments.js,
+//      js/keyboard.js, js/scroll.js, js/waitlist.js, js/intro.js,
+//      js/init.js, js/loader.js
+// ──────────────────────────────────────────────────────────────────────
+
 // ── Mock Data ──────────────────────────────────────────────────────────
 const MOCK = {
   session: {
@@ -1027,9 +1036,9 @@ function initScrollAnimations() {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
-  document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+  document.querySelectorAll('.scroll-animate, .apple-animate').forEach(el => observer.observe(el));
 }
 
 // ── Waitlist Form ──────────────────────────────────────────────────────

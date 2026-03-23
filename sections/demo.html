@@ -1,0 +1,183 @@
+<!-- ─── DEMO SECTION (split editorial card, kinetic-style) ─── -->
+<section class="demo-container" id="demo">
+  <div class="demo-section-inner">
+    <div class="demo-kinetic-card">
+      <div class="demo-kinetic-aside scroll-animate">
+        <div class="demo-kinetic-copy">
+          <h3 class="demo-kinetic-title">Interactive Coaching Demo</h3>
+          <p class="demo-kinetic-lead">Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Use the comment arrows to step through coach notes, or click the timeline to jump straight to a moment.</p>
+          <ul class="demo-features-list demo-kinetic-steps">
+            <li>
+              <span class="demo-kinetic-step-index" aria-hidden="true">01</span>
+              <div class="demo-kinetic-step-body">
+                <span class="demo-kinetic-step-title">Time-coded video feedback</span>
+              </div>
+            </li>
+            <li>
+              <span class="demo-kinetic-step-index" aria-hidden="true">02</span>
+              <div class="demo-kinetic-step-body">
+                <span class="demo-kinetic-step-title">On-screen drawing &amp; annotations</span>
+              </div>
+            </li>
+            <li>
+              <span class="demo-kinetic-step-index" aria-hidden="true">03</span>
+              <div class="demo-kinetic-step-body">
+                <span class="demo-kinetic-step-title">Detailed shot technique breakdown</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="demo-kinetic-comments-nav comments-carousel-nav" role="toolbar" aria-label="Step through comments">
+          <button type="button" class="comments-nav-btn" id="commentsNavPrev"
+            onclick="stepCommentCarousel(-1)" aria-label="Previous comment">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+          <span class="comments-nav-meta" id="commentsNavMeta" aria-live="polite"></span>
+          <button type="button" class="comments-nav-btn" id="commentsNavNext"
+            onclick="stepCommentCarousel(1)" aria-label="Next comment">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="demo-kinetic-visual">
+        <div class="demo-visual-inner">
+
+          <!-- ─── APP SHELL ─── -->
+          <div class="app-shell" id="appShell">
+
+            <!-- SPLASH SCREEN -->
+            <div class="app-splash" id="appSplash">
+              <div class="app-splash-content">
+                <div class="app-splash-logo">
+                  <span class="app-splash-logo-text">PB</span>
+                  <span class="app-splash-logo-academy">Academy</span>
+                </div>
+                <p class="app-splash-tagline">Interactive Coaching Demo</p>
+                <button type="button" class="app-splash-btn" id="startDemoBtn" onclick="startDemo()">Start Demo</button>
+              </div>
+            </div>
+
+            <!-- DEMO CONTENT (hidden until Start Demo) -->
+            <div class="app-demo-content app-demo-content-hidden" id="appDemoContent">
+
+              <!-- VIDEO PLAYER -->
+              <div class="video-wrapper" id="videoWrapper">
+                <div id="ytPlayer" style="position:absolute;inset:0;width:100%;height:100%;"></div>
+
+                <div class="video-loading-overlay visible" id="videoLoadingOverlay" aria-busy="true" role="status">
+                  <div class="video-loading-inner">
+                    <div class="video-loading-spinner" aria-hidden="true"></div>
+                    <span class="video-loading-label">Loading video…</span>
+                  </div>
+                </div>
+
+                <div class="skip-indicator" id="skipIndicator"></div>
+
+                <div class="frame-annotation-overlay" id="frameAnnotation">
+                  <svg width="100%" height="100%" viewBox="0 0 430 242" preserveAspectRatio="xMidYMid meet">
+                    <circle id="annotationCircle" cx="295" cy="130" r="28"
+                      fill="none" stroke="#FF3B30" stroke-width="2.5" stroke-dasharray="7 4" opacity="0.95">
+                      <animateTransform attributeName="transform" type="rotate"
+                        from="0 295 130" to="360 295 130" dur="8s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="295" cy="130" r="22"
+                      fill="rgba(255,59,48,0.08)" stroke="rgba(255,59,48,0.4)" stroke-width="1"/>
+                  </svg>
+                </div>
+
+                <div class="video-controls-bottom">
+                  <div class="progress-track" id="progressTrack" onclick="seekFromBar(event)">
+                    <div class="loop-range-bar" id="loopRangeBar" style="display:none;"></div>
+                    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                    <div class="progress-thumb" id="progressThumb" style="left:0%"></div>
+                  </div>
+                  <div class="video-time-row">
+                    <span class="video-time-text" id="videoCurrentTime">0:00</span>
+                    <span class="video-loop-icon" id="loopIcon" style="display:none;">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                        <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                      </svg>
+                      Loop
+                    </span>
+                    <span class="video-time-text" id="videoDuration">3:22</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TIME CONTROLS -->
+              <div class="time-controls">
+                <button class="tc-btn" onclick="adjustTime(-1/30)" title="Back 1 frame (←)">−1f</button>
+                <button class="tc-btn" onclick="adjustTime(-10)" title="Back 10 seconds (Y)">−10s</button>
+                <button class="tc-btn" onclick="adjustTime(-5)" title="Back 5 seconds (A)">−5s</button>
+                <button class="tc-btn" onclick="adjustTime(-1)" title="Back 1 second (Q)">−1s</button>
+                <button class="tc-play-btn" id="tcPlayBtn" onclick="togglePlay()" aria-label="Play/Pause (Space)">
+                  <svg id="tcPlayIcon" width="19" height="19" viewBox="0 0 24 24" fill="#8FB9A8" style="margin-left:2px;">
+                    <polygon points="5,3 19,12 5,21"/>
+                  </svg>
+                  <svg id="tcPauseIcon" width="19" height="19" viewBox="0 0 24 24" fill="#8FB9A8" style="display:none;">
+                    <rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>
+                  </svg>
+                </button>
+                <button class="tc-btn" onclick="adjustTime(1)" title="Forward 1 second (W)">+1s</button>
+                <button class="tc-btn" onclick="adjustTime(5)" title="Forward 5 seconds (S)">+5s</button>
+                <button class="tc-btn" onclick="adjustTime(10)" title="Forward 10 seconds (X)">+10s</button>
+                <button class="tc-btn" onclick="adjustTime(1/30)" title="Forward 1 frame (→)">+1f</button>
+              </div>
+
+              <!-- TABS -->
+              <div class="tabs-row" role="tablist">
+                <button class="tab-btn active" id="tab-comments" role="tab" aria-selected="true"
+                  onclick="switchTab('comments')">Comments</button>
+                <button class="tab-btn" id="tab-shot" role="tab" aria-selected="false"
+                  onclick="switchTab('shot')">Shot technique</button>
+              </div>
+
+              <!-- COMMENTS -->
+              <div class="comments-scroll" id="commentsArea" role="tabpanel" data-lenis-prevent>
+                <!-- Rendered by js/comments.js -->
+              </div>
+
+              <!-- SHOT TECHNIQUE PANEL -->
+              <div class="shot-technique-panel" id="shotTechniquePanel" role="tabpanel" data-lenis-prevent>
+                <div class="technique-header">
+                  <div class="technique-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8FB9A8" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="technique-title">Forehand Dink</div>
+                    <div class="technique-subtitle">Shot technique analysis</div>
+                  </div>
+                </div>
+                <div class="sub-tabs">
+                  <button class="sub-tab active" data-subtab="normal" onclick="switchSubTab('normal')">Normal</button>
+                  <button class="sub-tab" data-subtab="topspin" onclick="switchSubTab('topspin')">Topspin</button>
+                  <button class="sub-tab" data-subtab="slice" onclick="switchSubTab('slice')">Slice</button>
+                </div>
+                <div class="technique-list" id="techniqueList">
+                  <!-- Rendered by js/technique.js -->
+                </div>
+              </div>
+
+            </div><!-- /.app-demo-content -->
+
+          </div><!-- /.app-shell -->
+
+          <div class="demo-mockup-arrow" aria-hidden="true">
+            <img src="assets/Arrow Green.svg" alt="" width="160" height="94"/>
+          </div>
+        </div><!-- /.demo-visual-inner -->
+      </div><!-- /.demo-kinetic-visual -->
+    </div><!-- /.demo-kinetic-card -->
+  </div><!-- /.demo-section-inner -->
+</section>
