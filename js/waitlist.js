@@ -5,6 +5,7 @@ function initWaitlistForm() {
 
   const nameInput = form.querySelector('#waitlistName');
   const phoneInput = form.querySelector('#waitlistPhone');
+  const experienceInput = form.querySelector('#waitlistExperience');
   if (!phoneInput) return;
 
   let iti = null;
@@ -21,7 +22,12 @@ function initWaitlistForm() {
     nameInput?.classList.remove('error');
     phoneInput.classList.remove('error');
     phoneInput.closest('.iti')?.classList.remove('iti--error');
+    experienceInput?.classList.remove('error');
   };
+
+  experienceInput?.addEventListener('change', () => {
+    experienceInput.classList.remove('error');
+  });
 
   const setPhoneError = (on) => {
     phoneInput.classList.toggle('error', on);
@@ -44,10 +50,16 @@ function initWaitlistForm() {
     const validateAndFinish = () => {
       const name = (nameInput?.value || '').trim();
       const phoneTrimmed = (phoneInput.value || '').trim();
+      const experience = experienceInput?.value || '';
       let valid = true;
 
       if (!name) {
         nameInput?.classList.add('error');
+        valid = false;
+      }
+
+      if (!experience) {
+        experienceInput?.classList.add('error');
         valid = false;
       }
 
@@ -70,21 +82,30 @@ function initWaitlistForm() {
       }
 
       if (!valid) {
-        if (!name && phoneEmpty) {
+        const expMissing = !experience;
+        if (!name && phoneEmpty && expMissing) {
+          showToast('Please enter your name, phone number, and playing experience.');
+        } else if (!name && phoneEmpty) {
           showToast('Please enter your name and phone number.');
+        } else if (!name && expMissing) {
+          showToast('Please enter your name and how long you have been playing.');
+        } else if (phoneEmpty && expMissing) {
+          showToast('Please enter your phone number and how long you have been playing.');
         } else if (!name) {
           showToast('Please enter your name.');
         } else if (phoneEmpty) {
           showToast('Please enter your phone number.');
         } else if (phoneInvalidFormat) {
           showToast('Please enter a valid phone number.');
+        } else if (expMissing) {
+          showToast('Please select how long you have been playing pickleball.');
         } else {
-          showToast('Please enter your name and phone number.');
+          showToast('Please complete all fields.');
         }
         return;
       }
 
-      // TODO: send { name, phone: iti ? iti.getNumber() : phoneTrimmed } to backend
+      // TODO: send { name, phone: iti ? iti.getNumber() : phoneTrimmed, playingExperience: experience } to backend
       showToast(`Thanks, ${name}! You're on the waitlist. We'll be in touch soon.`);
       form.reset();
       if (iti) iti.setNumber('');
