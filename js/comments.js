@@ -176,7 +176,7 @@ function showDemoSlide(slideIndex, options = {}) {
       stripCommentNavClasses(el);
     });
     updateCommentsNavMeta();
-    updateDemoCopy(2);
+    updateDemoCopy(slideIndex);
     syncCommentFocusability();
     return;
   }

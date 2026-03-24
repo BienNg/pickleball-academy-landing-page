@@ -49,8 +49,8 @@ Plain-text export of all current on-page copy for editing or reuse. Source: `ind
 3. **Title:** Shot Technique Breakdown  
    **Lead:** Get a detailed breakdown of any shot in your session. Coach notes are pinned to exact frames and on-screen markers, so you can see precisely what to look for at each moment. Track head stability, paddle angle, weight transfer, and more with expert feedback.
 
-4. **Title:** Precision Feedback  
-   **Lead:** Focus on the details. Each coaching note links to the exact moment in your footage. Use the arrows to discover how small adjustments improve your game.
+4. **Title:** Complete Technique Checklist  
+   **Lead:** Every shot has key technique cues that must be recognized and executed correctly. We built a comprehensive checklist for each shot, and your coach marks what you are doing well and what still needs work. This gives you a complete, up-to-date overview of your technique at all times.
 
 ### Numbered feature list (static in `sections/demo.html`)
 
