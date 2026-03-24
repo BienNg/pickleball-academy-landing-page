@@ -59,9 +59,31 @@ function initScrollAnimations() {
     rootMargin: '0px 0px 200px 0px'
   });
 
+  // FAQ: first question triggers cascade (earlier viewport detection, 300px before entering)
+  const faqTrigger = document.querySelector('#faq .faq-item:first-child');
+  if (faqTrigger) {
+    const faqCascadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          faqCascadeObserver.unobserve(entry.target);
+          const faqSection = document.getElementById('faq');
+          if (!faqSection) return;
+          if (faqSection.classList.contains('scroll-animate')) faqSection.classList.add('in-view');
+          faqSection.querySelectorAll('.apple-animate').forEach((el) => el.classList.add('in-view'));
+        }
+      });
+    }, {
+      threshold: 0,
+      rootMargin: '0px 0px 300px 0px'
+    });
+    faqCascadeObserver.observe(faqTrigger);
+  }
+
   document.querySelectorAll('.scroll-animate, .apple-animate, .apple-animate-card, .apple-animate-cartoon').forEach((el) => {
+    const inFaq = el.closest('#faq');
     const inSystem = el.closest('#system');
     const animateWhenVisible = el.classList.contains('animate-when-visible');
+    if (inFaq) return; // FAQ uses cascade observer, skip standard observer
     // Use standard observer when not in #system, or when explicitly marked to wait until visible
     (inSystem && !animateWhenVisible ? earlyObserver : observer).observe(el);
   });
