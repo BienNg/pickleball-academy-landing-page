@@ -4,6 +4,7 @@ function appInit() {
   initIntroAnimation();
   initSmoothPageScroll();
   initScrollAnimations();
+  initCarousel();
   initWaitlistForm();
   initFaq();
   renderComments();
