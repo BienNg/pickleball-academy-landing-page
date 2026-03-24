@@ -1030,7 +1030,7 @@ body {
     gap: 1.25rem;
   }
   .demo-mockup-arrow {
-    width: min(160px, 70vw);
+    display: none;
   }
   .demo-mockup-arrow img {
     width: min(160px, 70vw);
