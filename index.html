@@ -129,6 +129,34 @@
     .apple-animate-card.apple-stagger-6 { animation-delay: 850ms; }
     .apple-animate-card.apple-stagger-7 { animation-delay: 1000ms; }
     .apple-animate-card.apple-stagger-8 { animation-delay: 1150ms; }
+
+    /* Apple-style FAQ Accordion */
+    .faq-item {
+      /* Remove border-b from last item usually, handled by layout if needed */
+    }
+    .faq-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.5s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+      opacity: 0;
+    }
+    .faq-item.is-open .faq-content {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    .faq-inner {
+      overflow: hidden;
+    }
+    .faq-icon {
+      transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1), color 0.3s ease;
+    }
+    .faq-item.is-open .faq-icon {
+      transform: rotate(45deg);
+      color: #111d28; /* on-surface */
+    }
+    .faq-button:hover .faq-icon {
+      color: #111d28;
+    }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-body antialiased selection:bg-primary-container selection:text-white">
