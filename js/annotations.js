@@ -6,8 +6,6 @@ function showFrameAnnotation(marker) {
     updateAnnotationCircle($('annotationCircle'), marker);
   }
   ann.classList.add('visible');
-  clearTimeout(activeAnnotationTimeout);
-  activeAnnotationTimeout = setTimeout(hideAnnotation, 5000);
 }
 
 function hideAnnotation() {
@@ -75,12 +73,9 @@ function onAnnotationDragMove(e) {
   const newCy = Math.max(20, Math.min(220, dragMarkerStart.cy + dy));
   const marker = { cx: newCx, cy: newCy, r: parseFloat($('annotationCircle').getAttribute('r')) };
   updateAnnotationCircle($('annotationCircle'), marker);
-  clearTimeout(activeAnnotationTimeout);
 }
 
 function onAnnotationDragEnd() {
   if (!isDragging) return;
   isDragging = false;
-  clearTimeout(activeAnnotationTimeout);
-  activeAnnotationTimeout = setTimeout(hideAnnotation, 5000);
 }
