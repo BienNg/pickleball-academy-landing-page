@@ -4,28 +4,38 @@
     <div class="demo-kinetic-card">
       <div class="demo-kinetic-aside scroll-animate">
         <div class="demo-kinetic-copy">
-          <h3 class="demo-kinetic-title">Interactive Coaching Demo</h3>
-          <p class="demo-kinetic-lead">Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Use the comment arrows to step through coach notes, or click the timeline to jump straight to a moment.</p>
-          <ul class="demo-features-list demo-kinetic-steps">
-            <li>
-              <span class="demo-kinetic-step-index" aria-hidden="true">01</span>
-              <div class="demo-kinetic-step-body">
-                <span class="demo-kinetic-step-title">Time-coded video feedback</span>
-              </div>
-            </li>
-            <li>
-              <span class="demo-kinetic-step-index" aria-hidden="true">02</span>
-              <div class="demo-kinetic-step-body">
-                <span class="demo-kinetic-step-title">On-screen drawing &amp; annotations</span>
-              </div>
-            </li>
-            <li>
-              <span class="demo-kinetic-step-index" aria-hidden="true">03</span>
-              <div class="demo-kinetic-step-body">
-                <span class="demo-kinetic-step-title">Detailed shot technique breakdown</span>
-              </div>
-            </li>
-          </ul>
+          <div class="demo-kinetic-start-prompt" id="demoStartPrompt">
+            <span class="demo-start-eyebrow">Guided Demo</span>
+            <h3 class="demo-start-title">Tap Start Demo on the phone to begin.</h3>
+            <p class="demo-start-lead">Experience the same polished flow your students see: instant session playback, coach notes tied to exact moments, and actionable technique guidance.</p>
+            <button type="button" class="demo-start-cta" onclick="startDemo()">Start Demo</button>
+            <p class="demo-start-footnote">A smooth, Apple-like walkthrough in under 60 seconds.</p>
+          </div>
+
+          <div class="demo-kinetic-default-copy" id="demoDefaultCopy" hidden>
+            <h3 class="demo-kinetic-title">Interactive Coaching Demo</h3>
+            <p class="demo-kinetic-lead">Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Use the comment arrows to step through coach notes, or click the timeline to jump straight to a moment.</p>
+            <ul class="demo-features-list demo-kinetic-steps">
+              <li>
+                <span class="demo-kinetic-step-index" aria-hidden="true">01</span>
+                <div class="demo-kinetic-step-body">
+                  <span class="demo-kinetic-step-title">Time-coded video feedback</span>
+                </div>
+              </li>
+              <li>
+                <span class="demo-kinetic-step-index" aria-hidden="true">02</span>
+                <div class="demo-kinetic-step-body">
+                  <span class="demo-kinetic-step-title">On-screen drawing &amp; annotations</span>
+                </div>
+              </li>
+              <li>
+                <span class="demo-kinetic-step-index" aria-hidden="true">03</span>
+                <div class="demo-kinetic-step-body">
+                  <span class="demo-kinetic-step-title">Detailed shot technique breakdown</span>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="demo-kinetic-comments-nav comments-carousel-nav" role="toolbar" aria-label="Step through comments">
           <button type="button" class="comments-nav-btn" id="commentsNavPrev"

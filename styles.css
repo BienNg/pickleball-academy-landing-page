@@ -273,6 +273,83 @@ body {
 .demo-kinetic-copy {
   width: 100%;
 }
+.demo-kinetic-start-prompt {
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  background:
+    radial-gradient(140% 120% at 0% 0%, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0) 58%),
+    linear-gradient(155deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.88) 55%, rgba(20, 31, 49, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 22px 40px rgba(2, 6, 23, 0.32);
+  backdrop-filter: blur(10px);
+}
+.demo-start-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.28rem 0.78rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #dbeafe;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.demo-start-title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.7rem, 3.8vw, 2.35rem);
+  font-weight: 760;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+.demo-start-lead {
+  margin: 1rem 0 1.4rem;
+  color: rgba(226, 232, 240, 0.92);
+  font-size: 0.97rem;
+  line-height: 1.66;
+}
+.demo-start-cta {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.72rem 1.2rem;
+  min-height: 2.8rem;
+  background: linear-gradient(160deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow:
+    0 10px 20px rgba(15, 23, 42, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.demo-start-cta:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 26px rgba(15, 23, 42, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  filter: brightness(1.02);
+}
+.demo-start-cta:active {
+  transform: translateY(0);
+}
+.demo-start-footnote {
+  margin: 0.85rem 0 0;
+  color: rgba(203, 213, 225, 0.82);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.demo-kinetic-aside--intro .demo-kinetic-comments-nav {
+  display: none;
+}
 .demo-kinetic-visual {
   width: 100%;
   order: 2;

@@ -9,7 +9,12 @@ function startDemo() {
 
   const splash = $('appSplash');
   const demoContent = $('appDemoContent');
-  if (!splash || !demoContent) return;
+  if (!splash || !demoContent) {
+    if (typeof showDemoSlide === 'function') {
+      showDemoSlide(0, { instant: true });
+    }
+    return;
+  }
 
   splash.classList.add('hidden');
 
@@ -33,6 +38,11 @@ function startDemo() {
       delay: 0.1,
       clearProps: 'all',
     });
+  }
+
+  // Leave intro prompt mode as soon as demo starts.
+  if (typeof showDemoSlide === 'function') {
+    showDemoSlide(0, { instant: true });
   }
 
   setTimeout(() => { splash.style.display = 'none'; }, 450);

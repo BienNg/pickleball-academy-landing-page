@@ -97,6 +97,15 @@ function updateCommentsNavMeta() {
 }
 
 function updateDemoCopy(index) {
+  const asideEl = document.querySelector('.demo-kinetic-aside');
+  const promptEl = $('demoStartPrompt');
+  const defaultCopyEl = $('demoDefaultCopy');
+  const showStartPrompt = !demoStarted && index === 0;
+
+  if (asideEl) asideEl.classList.toggle('demo-kinetic-aside--intro', showStartPrompt);
+  if (promptEl) promptEl.hidden = !showStartPrompt;
+  if (defaultCopyEl) defaultCopyEl.hidden = showStartPrompt;
+
   const copy = DEMO_COPY[index];
   if (!copy) return;
   const titleEl = document.querySelector('.demo-kinetic-copy .demo-kinetic-title');
