@@ -1739,8 +1739,11 @@ body {
   gap: 10px;
   padding: 16px;
   flex: 1;
-  overflow-y: hidden;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge Legacy */
 }
+.technique-list::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 
 .technique-item {
   display: flex;
@@ -1760,10 +1763,7 @@ body {
   gap: 10px;
 }
 .technique-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
+  display: none;
 }
 .technique-dot.needs-work { background: var(--red-danger); }
 .technique-dot.good { background: var(--green); }
