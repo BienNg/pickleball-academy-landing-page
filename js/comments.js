@@ -83,11 +83,16 @@ function updateCommentsNavMeta() {
   }
   meta.textContent = `${demoSlideIndex + 1} / ${DEMO_TOTAL_SLIDES}`;
 
-  const arrow = document.querySelector('.demo-mockup-arrow');
-  if (arrow) {
+  const primaryArrow = document.querySelector('.demo-mockup-arrow--primary');
+  if (primaryArrow) {
     const showMockupArrow = demoSlideIndex === 1 || demoSlideIndex === 2;
-    arrow.classList.toggle('visible', showMockupArrow);
-    arrow.classList.toggle('demo-mockup-arrow--aim-comment1', demoSlideIndex === 2);
+    primaryArrow.classList.toggle('visible', showMockupArrow);
+    primaryArrow.classList.toggle('demo-mockup-arrow--aim-comment1', demoSlideIndex === 2);
+  }
+
+  const frameDetailArrow = document.querySelector('.demo-mockup-arrow--frame-detail');
+  if (frameDetailArrow) {
+    frameDetailArrow.classList.toggle('visible', demoSlideIndex === 2);
   }
 }
 
