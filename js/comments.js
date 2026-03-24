@@ -12,6 +12,22 @@ function activateComment(id, ts) {
   showDemoSlide(boundedOneBasedSlide - 1, { instant: true, withMedia: true });
 }
 
+function handleFrameDetailClick(event, commentId, ts, frameId) {
+  event.stopPropagation();
+  const commentEl = $('comment-' + commentId);
+  const isParentSelected =
+    !!commentEl &&
+    (commentEl.classList.contains('active') ||
+      commentEl.classList.contains('comment-nav-focused'));
+
+  if (!isParentSelected) {
+    activateComment(commentId, ts);
+    return;
+  }
+
+  viewFrame(frameId);
+}
+
 function applyCommentMediaState(comment) {
   if (!comment) return;
   if (isPlaying) stopPlayback();
@@ -321,11 +337,11 @@ function renderComments() {
         .map(
           (f) => `
         <div class="frame-card" data-frame-id="${f.id}"
-          onclick="event.stopPropagation(); viewFrame('${f.id}')">
+          onclick="handleFrameDetailClick(event, ${c.id}, ${c.timestamp}, '${f.id}')">
           <div class="frame-card-header">
             <span class="frame-label-text">Frame Detail</span>
             <button class="view-frame-btn"
-              onclick="event.stopPropagation(); viewFrame('${f.id}')">
+              onclick="handleFrameDetailClick(event, ${c.id}, ${c.timestamp}, '${f.id}')">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="#8FB9A8"><polygon points="5,3 19,12 5,21"/></svg>
               VIEW FRAME
             </button>
