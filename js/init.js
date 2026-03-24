@@ -5,6 +5,7 @@ function appInit() {
   initSmoothPageScroll();
   initScrollAnimations();
   initWaitlistForm();
+  initFaq();
   renderComments();
   renderProgressMarkers();
   renderTechniqueItems();
