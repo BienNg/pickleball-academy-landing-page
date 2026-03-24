@@ -26,25 +26,43 @@ function initSmoothPageScroll() {
 function initScrollAnimations() {
   const observerStartTime = performance.now();
 
+  const reveal = (el, delay = 0) => {
+    const doReveal = () => el.classList.add('in-view');
+    delay > 0 ? setTimeout(doReveal, delay) : doReveal();
+  };
+
+  // Standard observer: trigger when element is ~35% visible
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        // Delay initial in-view elements slightly so the hidden state paints first.
         const isInitialViewportHit = performance.now() - observerStartTime < 400;
-        const reveal = () => entry.target.classList.add('in-view');
-        if (isInitialViewportHit) {
-          setTimeout(reveal, 80);
-        } else {
-          reveal();
-        }
+        reveal(entry.target, isInitialViewportHit ? 20 : 0);
         observer.unobserve(entry.target);
       }
     });
   }, {
-    // Trigger a bit later so cards don't animate before users reach the section.
     threshold: 0.35,
     rootMargin: '0px 0px -12% 0px'
   });
 
-  document.querySelectorAll('.scroll-animate, .apple-animate, .apple-animate-card').forEach((el) => observer.observe(el));
+  // Early observer for #system: trigger as soon as element enters screen (200px before viewport)
+  const earlyObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const isInitialViewportHit = performance.now() - observerStartTime < 400;
+        reveal(entry.target, isInitialViewportHit ? 0 : 0);
+        earlyObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0,
+    rootMargin: '0px 0px 200px 0px'
+  });
+
+  document.querySelectorAll('.scroll-animate, .apple-animate, .apple-animate-card, .apple-animate-cartoon').forEach((el) => {
+    const inSystem = el.closest('#system');
+    const animateWhenVisible = el.classList.contains('animate-when-visible');
+    // Use standard observer when not in #system, or when explicitly marked to wait until visible
+    (inSystem && !animateWhenVisible ? earlyObserver : observer).observe(el);
+  });
 }
