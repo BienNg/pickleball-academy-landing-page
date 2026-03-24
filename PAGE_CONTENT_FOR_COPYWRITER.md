@@ -47,7 +47,7 @@ Plain-text export of all current on-page copy for editing or reuse. Source: `ind
    **Lead:** Watch the exact moment on repeat—looped seamlessly around the key mistake the coach highlighted. Focus on one detail at a time, with the coach’s voice guiding what to adjust—timing, positioning, and execution—until it clicks.
 
 3. **Title:** Shot Technique Breakdown  
-   **Lead:** Get detailed analysis of your forehand dink. Track head stability, paddle angle, and weight transfer with expert feedback. Navigate between coaching moments using the arrows or timeline markers.
+   **Lead:** Get a detailed breakdown of any shot in your session. Coach notes are pinned to exact frames and on-screen markers, so you can see precisely what to look for at each moment. Track head stability, paddle angle, weight transfer, and more with expert feedback.
 
 4. **Title:** Precision Feedback  
    **Lead:** Focus on the details. Each coaching note links to the exact moment in your footage. Use the arrows to discover how small adjustments improve your game.

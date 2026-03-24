@@ -92,7 +92,7 @@ const DEMO_COPY = [
   },
   {
     title: 'Shot Technique Breakdown',
-    lead: 'Get detailed analysis of your forehand dink. Track head stability, paddle angle, and weight transfer with expert feedback. Navigate between coaching moments using the arrows or timeline markers.',
+    lead: 'Get a detailed breakdown of any shot in your session. Coach notes are pinned to exact frames and on-screen markers, so you can see precisely what to look for at each moment. Track head stability, paddle angle, weight transfer, and more with expert feedback.',
   },
   {
     title: 'Precision Feedback',
