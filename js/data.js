@@ -20,19 +20,19 @@ const MOCK = {
       id: 1,
       author: 'bien-nguyen',
       initials: 'B',
-      timestamp: 10,
-      loopEnd: null,
+      timestamp: 48,
+      loopEnd: 50,
       text: 'Dont go up when hitting the ball',
       frames: [
         {
           id: 'fd-1a',
-          ts: 10,
+          ts: 48 + (12 / 30),
           note: 'Head Starting position before hitting the ball',
           marker: { cx: 295, cy: 130, r: 28 },
         },
         {
           id: 'fd-1b',
-          ts: 10,
+          ts: 49,
           note: 'Head Ending position after shot. Your Head should stay at the same level',
           marker: { cx: 295, cy: 138, r: 26 },
         },

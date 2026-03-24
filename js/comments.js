@@ -314,7 +314,7 @@ function renderComments() {
   const itemsHtml = MOCK.comments
     .map((c) => {
       const tsLabel = c.loopEnd !== null
-        ? `${fmt(c.timestamp)} <span class="ts-arrow">→</span> ${fmt(c.loopEnd)}`
+        ? `${fmt(c.timestamp)}-${fmt(c.loopEnd)}`
         : fmt(c.timestamp);
 
       const framesHtml = c.frames
