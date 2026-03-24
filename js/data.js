@@ -13,7 +13,7 @@ const MOCK = {
       initials: 'B',
       timestamp: 13,
       loopEnd: 15,
-      text: "Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot",
+      text: "Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot.",
       frames: [],
     },
     {
@@ -22,19 +22,19 @@ const MOCK = {
       initials: 'B',
       timestamp: 48,
       loopEnd: 50,
-      text: 'Dont go up when hitting the ball',
+      text: 'Dont go up when hitting the ball to reduce popups.',
       frames: [
         {
           id: 'fd-1a',
           ts: 48 + (12 / 30),
-          note: 'Head Starting position before hitting the ball',
-          marker: { cx: 295, cy: 130, r: 28 },
+          note: 'Head Starting position before hitting the ball.',
+          marker: { cx: 110, cy: 70, r: 16 },
         },
         {
           id: 'fd-1b',
           ts: 49,
-          note: 'Head Ending position after shot. Your Head should stay at the same level',
-          marker: { cx: 295, cy: 138, r: 26 },
+          note: 'Jump between the first frame and this frame and notice how much you Head moves up. Your Head should stay at the same level.',
+          marker: { cx: 150, cy: 45, r: 16 },
         },
       ],
     },
