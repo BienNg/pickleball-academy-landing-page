@@ -10,6 +10,7 @@ const SECTION_FILES = [
   'sections/why-it-works.html',
   'sections/roadmap.html',
   'sections/compare.html',
+  'sections/target-audience.html',
   'sections/coaching.html',
   'sections/waitlist.html',
   'sections/footer.html',
@@ -34,7 +35,7 @@ async function loadSections() {
   // Sections 2–7 (hero → waitlist) go inside <main>.
   // Sections 8–9 (footer, modals) go after <main>.
   const root = document.getElementById('app-root');
-  const mainSectionCount = 7; // hero, demo, why-it-works, roadmap, compare, coaching, waitlist
+  const mainSectionCount = 8; // hero, demo, why-it-works, roadmap, compare, target-audience, coaching, waitlist
   const mainStartIdx = 2;
 
   root.innerHTML =
