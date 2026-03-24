@@ -132,6 +132,14 @@
     .apple-animate-card.apple-stagger-7 { animation-delay: 1000ms; }
     .apple-animate-card.apple-stagger-8 { animation-delay: 1150ms; }
 
+    /* Keep coaching location heading at exactly two lines */
+    .coaching-location-title {
+      font-size: clamp(1.9rem, 3.2vw, 3.8rem);
+    }
+    .coaching-location-title .coaching-location-line {
+      white-space: nowrap;
+    }
+
     /* Cartoon-style expansion (scale + bounce, no fade) */
     .apple-animate-cartoon {
       opacity: 0;

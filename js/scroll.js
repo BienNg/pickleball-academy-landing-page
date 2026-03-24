@@ -84,7 +84,8 @@ function initScrollAnimations() {
     const inSystem = el.closest('#system');
     const animateWhenVisible = el.classList.contains('animate-when-visible');
     if (inFaq) return; // FAQ uses cascade observer, skip standard observer
-    // Use standard observer when not in #system, or when explicitly marked to wait until visible
-    (inSystem && !animateWhenVisible ? earlyObserver : observer).observe(el);
+    // Use earlier reveal for #system cards and any explicitly marked element.
+    const forceEarly = el.classList.contains('animate-early');
+    ((inSystem && !animateWhenVisible) || forceEarly ? earlyObserver : observer).observe(el);
   });
 }
