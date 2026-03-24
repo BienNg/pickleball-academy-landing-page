@@ -7,16 +7,6 @@ function switchSubTab(tabId) {
   renderTechniqueItems();
 }
 
-function toggleTechniqueCheck(subId, label) {
-  const items = MOCK.technique.items[subId];
-  const item = items.find((i) => i.label === label);
-  if (item) {
-    item.checked = !item.checked;
-    renderTechniqueItems();
-    showToast(item.checked ? `✓ ${label}` : `Unchecked: ${label}`);
-  }
-}
-
 function renderTechniqueItems() {
   const container = $('techniqueList');
   if (!container) return;
@@ -29,10 +19,7 @@ function renderTechniqueItems() {
       const dotClass = isChecked ? 'good' : 'needs-work';
       const statusClass = isChecked ? 'good' : 'needs-work';
       const statusText = isChecked ? 'Good' : 'Needs work';
-      const checkClass = isChecked ? 'checked' : 'unchecked';
-      const checkIcon = isChecked
-        ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
-        : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C7C7CC" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+      const checkedIcon = '<span class="technique-checkmark" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>';
 
       return `
         <div class="technique-item">
@@ -42,9 +29,7 @@ function renderTechniqueItems() {
           </div>
           <div class="technique-item-right">
             <span class="technique-status ${statusClass}">${statusText}</span>
-            <button class="technique-checkbox ${checkClass}"
-              onclick="toggleTechniqueCheck('${activeTechSubTab}', '${item.label.replace(/'/g, "\\'")}')"
-            >${checkIcon}</button>
+            ${isChecked ? checkedIcon : ''}
           </div>
         </div>
       `;

@@ -1777,35 +1777,23 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: auto;
 }
 .technique-status {
   font-size: 12px;
   font-weight: 500;
+  white-space: nowrap;
 }
 .technique-status.needs-work { color: var(--red-danger); }
 .technique-status.good { color: var(--green); }
 
-.technique-checkbox {
+.technique-checkmark {
   width: 28px;
   height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.15s;
-  border: none;
-  padding: 0;
-}
-.technique-checkbox.unchecked {
-  border: 1.5px solid var(--border);
-  background: #fff;
-}
-.technique-checkbox.unchecked:hover {
-  border-color: var(--primary);
-  background: rgba(143,185,168,0.06);
-}
-.technique-checkbox.checked {
   background: var(--green);
 }
 
