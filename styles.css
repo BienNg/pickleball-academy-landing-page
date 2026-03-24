@@ -1420,13 +1420,13 @@ body {
     filter 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Inactive rows: muted and non-interactive (exclude transient nav animation classes) */
+/* Inactive rows: muted but still interactive (exclude transient nav animation classes) */
 .comments-scroll
   .comment-item:not(.active):not(.comment-nav-focused):not(.comment-nav-leave-left):not(.comment-nav-leave-right):not(.comment-nav-prep-from-right):not(.comment-nav-prep-from-left) {
   opacity: 0.38;
   filter: grayscale(0.35);
-  pointer-events: none;
-  cursor: default;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .comments-scroll .comment-item:is(.active, .comment-nav-focused) {

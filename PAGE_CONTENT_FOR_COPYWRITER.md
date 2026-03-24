@@ -1,6 +1,6 @@
 # PB Academy landing page — copy deck
 
-Plain-text export of all current on-page copy for editing or reuse. Source: `index.html`, `sections/*.html`, `js/data.js`, and selected UI strings from `js/comments.js`, `js/waitlist.js`, and `js/modals.html`.
+Plain-text export of all current on-page copy for editing or reuse. Source: `index.html`, `sections/*.html`, `js/data.js`, and selected UI strings from `js/comments.js`, `js/waitlist.js`, and `sections/modals.html`.
 
 ---
 
@@ -19,7 +19,7 @@ Plain-text export of all current on-page copy for editing or reuse. Source: `ind
 ## Navigation
 
 - **Brand:** PB Academy
-- **Links:** Why It Works · Compare · Roadmap
+- **Links:** Why It Works · Roadmap · Compare · Ho-Chi-Minh-City (badge: **New** on the HCMC link)
 - **Primary button:** Join Waitlist
 
 ---
@@ -27,8 +27,8 @@ Plain-text export of all current on-page copy for editing or reuse. Source: `ind
 ## Hero
 
 - **Pill (duplicate of intro):** The Game-Changing Academy
-- **Headline:** Pro-level coaching. / Now in your pocket.
-- **Subhead:** The first data-driven pickleball academy. We turn your match footage into a personalized growth roadmap using scientifically proven coaching frameworks.
+- **Headline:** Pro-level coaching. / Built for real improvement.
+- **Subhead:** Get recorded training sessions and personalized feedback, and follow a clear roadmap — so you stop practicing random things and start progressing faster.
 - **Primary CTA:** Reserve Your Spot
 - **Secondary CTA:** Watch Demo
 
@@ -43,8 +43,8 @@ Plain-text export of all current on-page copy for editing or reuse. Source: `ind
 1. **Title:** Interactive Coaching Demo  
    **Lead:** Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Use the comment arrows to step through coach notes, or click the timeline to jump straight to a moment.
 
-2. **Title:** On-Screen Annotations  
-   **Lead:** See the red circle highlight exactly where the coach is pointing—head position, contact point, and follow-through. Step through each note with the arrows to see frame-by-frame feedback.
+2. **Title:** Shot Loop Replay  
+   **Lead:** Watch the exact moment on repeat—looped seamlessly around the key mistake the coach highlighted. Focus on one detail at a time, with the coach’s voice guiding what to adjust—timing, positioning, and execution—until it clicks.
 
 3. **Title:** Shot Technique Breakdown  
    **Lead:** Get detailed analysis of your forehand dink. Track head stability, paddle angle, and weight transfer with expert feedback. Navigate between coaching moments using the arrows or timeline markers.
@@ -112,21 +112,25 @@ Plain-text export of all current on-page copy for editing or reuse. Source: `ind
 
 *Session metadata (for context; mostly not shown as marketing copy): date Sun, Mar 15, 2026 · shot Forehand Dink · student bach.nn11*
 
+*Render order follows `MOCK.comments` in `js/data.js` (first item = first in the list).*
+
 **Comment 1** (author: bien-nguyen, initials B)
+
+- **Body:** Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot  
+
+**Comment 2** (author: bien-nguyen, initials B)
 
 - **Body:** Dont go up when hitting the ball  
 - **Frame note 1:** Head Starting position before hitting the ball  
 - **Frame note 2:** Head Ending position after shot. Your Head should stay at the same level  
-
-**Comment 2** (author: bien-nguyen, initials B)
-
-- **Body:** Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot  
 
 ### Comment / frame UI microcopy
 
 - Frame card label: Frame Detail  
 - Button: VIEW FRAME  
 - Modal default title: Frame Detail  
+- Success modal title (waitlist): You’re on the list  
+- Success modal dismiss: Done  
 - Progress marker tooltip pattern: Comment at {time}  
 - Carousel meta pattern: `{n} / {total}` (e.g. 1 / 4)  
 - Empty state: No comments  
@@ -201,13 +205,14 @@ We are currently offering in-person coaching sessions in Ho Chi Minh City, Vietn
 
 Train alongside players at your level while receiving focused, personalized feedback within a structured system.
 
-**Program structure:**
+**Program structure (card heading):** Program structure
+
 - **Small groups:** 3 players per session
 - **Frequency:** 1–2 sessions per week
 - **Duration:** 4-week structured program
 
-**Highlight line:**
-Limited spots available — early members get priority access.
+**Highlight line (pill):**
+Limited spots available — with notifications icon (bell) in UI.
 
 ---
 
@@ -219,13 +224,21 @@ Limited spots available — early members get priority access.
 **Form**
 
 - Placeholder: Your Name  
-- Placeholder: Phone Number  
+- Phone: international format input (`intl-tel-input`; no fixed placeholder string in markup — default country Vietnam)  
+- **Playing experience** (select, required):  
+  - Placeholder option: How long have you been playing?  
+  - Beginner  
+  - Over 6 months  
+  - Over a year  
+  - Over 2 years  
 - Submit: Join Waitlist  
 
-**Validation / success toasts** (`js/waitlist.js`)
+**Validation / success** (`js/waitlist.js`, `sections/modals.html`)
 
-- Please enter your name and phone number.  
-- Thanks, {name}! You're on the waitlist. We'll be in touch soon.
+- Toast: Please enter a valid phone number.  
+- Toast: Please fill in your name, phone number, and playing experience.  
+- Toast (submit error): Something went wrong. Please try again in a moment.  
+- Success modal message: Thanks, {name}. We'll contact you soon with updates.
 
 ---
 
@@ -239,4 +252,4 @@ Limited spots available — early members get priority access.
 
 - **Typos to fix in product copy:** roadmap Step 01 — “youre” → “your”; demo comment — “Dont” → “Don’t” (if you want standard spelling).  
 - **Compare section:** statistic claims (e.g. 200%, < 30%, 2-3×) should be verified or qualified for legal/compliance if used publicly.  
-- **Demo carousel:** four `DEMO_COPY` entries map to slides 0–3; if you change slide count in `js/data.js`, keep titles/leads aligned in code.
+- **Demo carousel:** four `DEMO_COPY` entries map to slides 0–3; `DEMO_TOTAL_SLIDES` in `js/data.js` should stay aligned with slide count and comment list length.

@@ -2,7 +2,14 @@
 function activateComment(id, ts) {
   const idx = MOCK.comments.findIndex((c) => c.id === id);
   if (idx < 0) return;
-  showDemoSlide(idx + 1, { instant: true, withMedia: true });
+  const commentOrdinal = idx + 1; // 1-based position in the rendered list
+  const oneBasedSlide =
+    COMMENT_CLICK_SLIDE_OVERRIDES[commentOrdinal] ?? (commentOrdinal + 1);
+  const boundedOneBasedSlide = Math.max(
+    1,
+    Math.min(DEMO_TOTAL_SLIDES, oneBasedSlide)
+  );
+  showDemoSlide(boundedOneBasedSlide - 1, { instant: true, withMedia: true });
 }
 
 function applyCommentMediaState(comment) {

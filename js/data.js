@@ -78,8 +78,8 @@ const DEMO_COPY = [
     lead: 'Explore a real session. Watch how match footage is transformed into precise, time-coded feedback. Use the comment arrows to step through coach notes, or click the timeline to jump straight to a moment.',
   },
   {
-    title: 'On-Screen Annotations',
-    lead: 'See the red circle highlight exactly where the coach is pointing—head position, contact point, and follow-through. Step through each note with the arrows to see frame-by-frame feedback.',
+    title: 'Shot Loop Replay',
+    lead: 'Watch the exact moment on repeat—looped seamlessly around the key mistake the coach highlighted. Focus on one detail at a time, with the coach’s voice guiding what to adjust—timing, positioning, and execution—until it clicks.',
   },
   {
     title: 'Shot Technique Breakdown',
@@ -90,6 +90,13 @@ const DEMO_COPY = [
     lead: 'Focus on the details. Each coaching note links to the exact moment in your footage. Use the arrows to discover how small adjustments improve your game.',
   },
 ];
+
+// Optional 1-based comment-position -> 1-based slide-number overrides for click navigation.
+// Default behavior (when no override exists): comment N opens slide N+1.
+const COMMENT_CLICK_SLIDE_OVERRIDES = {
+  1: 2, // first comment -> slide 2
+  3: 3, // third comment -> slide 3
+};
 
 // Derived constants (depend on MOCK)
 const DEMO_TOTAL_SLIDES = MOCK.comments.length + 2; // +1 intro, +1 shot technique
