@@ -12,25 +12,30 @@ function initCarousel() {
 
   if (cards.length === 0 || dots.length === 0) return;
 
-  // Update dots based on scroll position
-  const updateDots = () => {
-    // Calculate which card is closest to the center or left edge
-    const scrollLeft = carousel.scrollLeft;
-    const carouselWidth = carousel.offsetWidth;
-    const scrollCenter = scrollLeft + carouselWidth / 2;
+  // Update dots based on scroll position (or use explicit index when provided)
+  const updateDots = (forceIndex) => {
+    let activeIndex;
 
-    let activeIndex = 0;
-    let minDistance = Infinity;
+    if (typeof forceIndex === 'number') {
+      activeIndex = forceIndex;
+    } else {
+      const scrollLeft = carousel.scrollLeft;
+      const carouselWidth = carousel.offsetWidth;
+      const scrollCenter = scrollLeft + carouselWidth / 2;
 
-    cards.forEach((card, index) => {
-      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const distance = Math.abs(scrollCenter - cardCenter);
+      activeIndex = 0;
+      let minDistance = Infinity;
 
-      if (distance < minDistance) {
-        minDistance = distance;
-        activeIndex = index;
-      }
-    });
+      cards.forEach((card, index) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const distance = Math.abs(scrollCenter - cardCenter);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          activeIndex = index;
+        }
+      });
+    }
 
     // Update dot styles
     dots.forEach((dot, index) => {
@@ -46,25 +51,55 @@ function initCarousel() {
     });
   };
 
-  // Listen to scroll events on the carousel
+  // Ignore scroll-driven updates during programmatic scroll (prevents dot from shrinking on first click)
+  let isProgrammaticScroll = false;
+
   carousel.addEventListener('scroll', () => {
-    // Use requestAnimationFrame for smooth performance
-    requestAnimationFrame(updateDots);
+    if (isProgrammaticScroll) return;
+    requestAnimationFrame(() => updateDots());
   });
 
-  // Click on dots to scroll to the respective card
+  // Scroll to a specific card and focus the dot
+  const goToCard = (index) => {
+    if (!cards[index]) return;
+    isProgrammaticScroll = true;
+    updateDots(index); // Immediately expand the dot
+
+    const paddingLeft = parseFloat(window.getComputedStyle(carousel).paddingLeft) || 0;
+    carousel.scrollTo({
+      left: cards[index].offsetLeft - paddingLeft,
+      behavior: 'smooth'
+    });
+
+    // Re-enable scroll-driven updates when scroll settles
+    if ('onscrollend' in window) {
+      carousel.addEventListener('scrollend', () => {
+        isProgrammaticScroll = false;
+      }, { once: true });
+    } else {
+      setTimeout(() => { isProgrammaticScroll = false; }, 500);
+    }
+  };
+
+  // Click on card: scroll to center it and focus the dot (ignore if user was dragging)
+  let pointerStartX = 0;
+  cards.forEach((card, index) => {
+    card.addEventListener('pointerdown', (e) => {
+      pointerStartX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    });
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
+      const dx = Math.abs((e.clientX ?? 0) - pointerStartX);
+      if (dx > 15) return; // User was dragging, don't treat as click
+      goToCard(index);
+    });
+  });
+
+  // Click on dots: scroll to card and focus the dot
   dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-      if (cards[index]) {
-        // Get the padding offset from the container so it aligns properly
-        const paddingLeft = parseFloat(window.getComputedStyle(carousel).paddingLeft) || 0;
-        
-        // Scroll to the specific card
-        carousel.scrollTo({
-          left: cards[index].offsetLeft - paddingLeft,
-          behavior: 'smooth'
-        });
-      }
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      goToCard(index);
     });
   });
 
