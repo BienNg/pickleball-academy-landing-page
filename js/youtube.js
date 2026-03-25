@@ -124,6 +124,9 @@ function onPlayerStateChange(event) {
     ytPlayer.seekTo(0, true);
     currentTime = 0;
     updateProgressUI();
+    if (typeof updateCommentMessageOverlay === 'function') {
+      updateCommentMessageOverlay(currentTime);
+    }
     ytPlayer.playVideo();
   }
 }
@@ -139,6 +142,9 @@ function startProgressSync() {
     if (loopComment && currentTime >= loopComment.loopEnd) {
       ytPlayer.seekTo(loopComment.timestamp, true);
       currentTime = loopComment.timestamp;
+    }
+    if (typeof updateCommentMessageOverlay === 'function') {
+      updateCommentMessageOverlay(currentTime);
     }
     updateProgressUI();
     progressRAF = requestAnimationFrame(tick);
@@ -157,5 +163,8 @@ function syncTimeFromPlayer() {
   if (ytReady) {
     currentTime = ytPlayer.getCurrentTime();
     updateProgressUI();
+    if (typeof updateCommentMessageOverlay === 'function') {
+      updateCommentMessageOverlay(currentTime);
+    }
   }
 }

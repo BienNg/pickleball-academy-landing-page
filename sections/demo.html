@@ -101,6 +101,19 @@
                   </svg>
                 </div>
 
+                <!-- iMessage-style comment bubble overlay -->
+                <div
+                  class="comment-message-overlay"
+                  id="commentMessageOverlay"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  role="status"
+                >
+                  <div class="comment-message-bubble">
+                    <span class="comment-message-text" id="commentMessageText"></span>
+                  </div>
+                </div>
+
                 <div class="video-controls-bottom">
                   <div class="progress-track" id="progressTrack" onclick="seekFromBar(event)">
                     <div class="loop-range-bar" id="loopRangeBar" style="display:none;"></div>

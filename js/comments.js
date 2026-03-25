@@ -35,6 +35,7 @@ function applyCommentMediaState(comment) {
   clearTimeout(activeAnnotationTimeout);
   hideAnnotation();
   updateLoopRange(comment);
+  updateCommentMessageOverlay(comment.timestamp);
 }
 
 // ── Comment Nav Carousel ───────────────────────────────────────────────
@@ -69,9 +70,58 @@ function clearCommentListState() {
   });
   updateLoopRange(null);
   hideAnnotation();
+  hideCommentMessageOverlay();
   updateCommentsNavMeta();
   updateDemoCopy(0);
   syncCommentFocusability();
+}
+
+// ── iMessage-style Comment Bubble Overlay ─────────────────────────────
+let lastShownCommentMessageId = null;
+
+function hideCommentMessageOverlay() {
+  const overlay = $('commentMessageOverlay');
+  if (!overlay) return;
+  overlay.classList.remove('visible');
+}
+
+/**
+ * Shows the bubble only during the active comment's configured time window.
+ * - If `loopEnd` exists: [timestamp, loopEnd]
+ * - Otherwise: a short window after the timestamp
+ */
+function updateCommentMessageOverlay(time = currentTime) {
+  const overlay = $('commentMessageOverlay');
+  const textEl = $('commentMessageText');
+  if (!overlay || !textEl) return;
+
+  if (activeCommentId == null) {
+    hideCommentMessageOverlay();
+    return;
+  }
+
+  const comment = MOCK.comments.find((c) => c.id === activeCommentId);
+  if (!comment) {
+    hideCommentMessageOverlay();
+    return;
+  }
+
+  const epsilon = 0.06; // small slack to avoid edge flicker
+  const start = comment.timestamp;
+  const end = comment.loopEnd !== null ? comment.loopEnd : comment.timestamp + 1.25;
+
+  const shouldShow = time + epsilon >= start && time - epsilon <= end;
+  if (!shouldShow) {
+    hideCommentMessageOverlay();
+    return;
+  }
+
+  // Avoid re-setting text every animation frame.
+  if (lastShownCommentMessageId !== comment.id) {
+    textEl.textContent = comment.text;
+    lastShownCommentMessageId = comment.id;
+  }
+  overlay.classList.add('visible');
 }
 
 function updateCommentsNavMeta() {
@@ -164,6 +214,7 @@ function showDemoSlide(slideIndex, options = {}) {
     switchTab('comments');
     hideAnnotation();
     updateLoopRange(null);
+    hideCommentMessageOverlay();
     $$('.comment-item').forEach((el) => {
       el.classList.remove('active');
       stripCommentNavClasses(el);
@@ -180,6 +231,7 @@ function showDemoSlide(slideIndex, options = {}) {
     switchTab('shot');
     hideAnnotation();
     updateLoopRange(null);
+    hideCommentMessageOverlay();
     $$('.comment-item').forEach((el) => {
       el.classList.remove('active');
       stripCommentNavClasses(el);
