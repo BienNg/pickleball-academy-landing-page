@@ -1313,7 +1313,7 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  text-align: right;
+  text-align: left;
 
   opacity: 0;
   transform: translateY(-6px) scale(0.98);
@@ -1328,7 +1328,7 @@ body {
   position: relative;
   max-width: min(36%, 210px);
 
-  background: rgba(255, 255, 255, 0.96);
+  background: #ffffff;
   color: #111111;
   border-radius: 9px;
   padding: 5px 6px;
@@ -1338,24 +1338,11 @@ body {
   line-height: 1.35;
   letter-spacing: -0.01em;
   word-break: break-word;
+  text-align: left;
 
   box-shadow:
     0 6px 15px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-/* Outgoing message tail (bottom-right) */
-.comment-message-bubble::after {
-  content: '';
-  position: absolute;
-  right: 6px;
-  bottom: -4px;
-  width: 6px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.96);
-  transform: rotate(45deg);
-  border-bottom-right-radius: 2px;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+    inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 @media (max-width: 480px) {
