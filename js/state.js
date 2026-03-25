@@ -6,6 +6,7 @@ const $$ = (sel) => document.querySelectorAll(sel);
 let DURATION = MOCK.session.duration;
 let currentTime = 0;
 let isPlaying = false;
+let loopPlaybackEnabled = true;
 let demoStarted = false;
 let activeCommentId = null;
 let visibleCommentIndex = -1;

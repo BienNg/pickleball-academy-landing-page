@@ -12,7 +12,7 @@ const MOCK = {
       author: 'bien-nguyen',
       initials: 'B',
       timestamp: 13,
-      loopEnd: 15,
+      loopEnd: 27,
       text: "Keep your left foot on the ground while hitting the ball. You'll be more consistent and balanced for the next shot.",
       frames: [],
     },

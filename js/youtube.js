@@ -133,12 +133,12 @@ function onPlayerStateChange(event) {
 
 function startProgressSync() {
   stopProgressSync();
-  const loopComment = MOCK.comments.find(
-    (c) => c.id === activeCommentId && c.loopEnd !== null
-  );
   function tick() {
     if (!ytReady || !isPlaying) return;
     currentTime = ytPlayer.getCurrentTime();
+    const loopComment = loopPlaybackEnabled
+      ? MOCK.comments.find((c) => c.id === activeCommentId && c.loopEnd !== null)
+      : null;
     if (loopComment && currentTime >= loopComment.loopEnd) {
       ytPlayer.seekTo(loopComment.timestamp, true);
       currentTime = loopComment.timestamp;

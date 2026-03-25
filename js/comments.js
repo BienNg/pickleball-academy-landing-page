@@ -342,21 +342,62 @@ function refreshCommentListAfterRender() {
   syncCommentFocusability();
 }
 
+function setLoopIconState(enabled) {
+  const icon = $('loopIcon');
+  if (!icon) return;
+  const isEnabled = !!enabled;
+  icon.classList.toggle('is-off', !isEnabled);
+  icon.setAttribute('aria-pressed', String(isEnabled));
+  icon.setAttribute(
+    'title',
+    isEnabled ? 'Loop is on. Click to disable.' : 'Loop is off. Click to enable.'
+  );
+}
+
+function toggleLoopPlayback(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  if (activeCommentId == null) return;
+  const comment = MOCK.comments.find((c) => c.id === activeCommentId);
+  if (!comment || comment.loopEnd === null) return;
+  loopPlaybackEnabled = !loopPlaybackEnabled;
+  setLoopIconState(loopPlaybackEnabled);
+}
+
+function handleLoopIconKeydown(event) {
+  if (event.key === 'Enter' || event.key === ' ') {
+    toggleLoopPlayback(event);
+  }
+}
+
 // ── Loop Range Bar ─────────────────────────────────────────────────────
 function updateLoopRange(comment) {
   const bar = $('loopRangeBar');
   const icon = $('loopIcon');
   if (!bar || !icon) return;
   if (comment && comment.loopEnd !== null) {
+    loopPlaybackEnabled = true;
     const startPct = (comment.timestamp / DURATION) * 100;
     const endPct = (comment.loopEnd / DURATION) * 100;
     bar.style.left = startPct + '%';
     bar.style.width = (endPct - startPct) + '%';
     bar.style.display = 'block';
     icon.style.display = 'flex';
+    icon.tabIndex = 0;
+    icon.setAttribute('role', 'button');
+    if (!icon.dataset.loopEventsBound) {
+      icon.addEventListener('click', toggleLoopPlayback);
+      icon.addEventListener('keydown', handleLoopIconKeydown);
+      icon.dataset.loopEventsBound = 'true';
+    }
+    setLoopIconState(true);
   } else {
+    loopPlaybackEnabled = true;
     bar.style.display = 'none';
     icon.style.display = 'none';
+    setLoopIconState(true);
   }
 }
 
