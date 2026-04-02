@@ -14,6 +14,7 @@ const SECTION_FILES = [
   'sections/compare.html',
   'sections/target-audience.html',
   'sections/coaching.html',
+  'sections/who-we-are.html',
   'sections/waitlist.html',
   'sections/footer.html',
   'sections/modals.html',
@@ -37,7 +38,7 @@ async function loadSections() {
   // Sections 2–11 (hero → waitlist+faq) go inside <main>.
   // Sections 8–9 (footer, modals) go after <main>.
   const root = document.getElementById('app-root');
-  const mainSectionCount = 10; // hero, demo, waitlist-cta, why-it-works, roadmap, system, compare, target-audience, coaching, waitlist+faq
+  const mainSectionCount = 11; // hero, demo, waitlist-cta, why-it-works, roadmap, system, compare, target-audience, coaching, who-we-are, waitlist+faq
   const mainStartIdx = 2;
 
   root.innerHTML =
