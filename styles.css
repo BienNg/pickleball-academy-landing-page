@@ -179,7 +179,9 @@ body {
 
 /* Waitlist form: validation */
 #waitlistForm #waitlistName.error,
-#waitlistForm #waitlistExperience.error {
+#waitlistForm #waitlistExperience.error,
+#waitlistFormSecondary #waitlistNameSecondary.error,
+#waitlistFormSecondary #waitlistExperienceSecondary.error {
   border-color: #dc2626;
   box-shadow: 0 0 0 1px rgb(220 38 38 / 0.35);
 }

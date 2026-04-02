@@ -1,0 +1,33 @@
+<!-- ─── WAITLIST CTA (primary anchor #waitlist — below demo) ─── -->
+<section class="py-24 px-6 bg-[#fbfbfd] text-center border-t border-gray-100 scroll-animate" id="waitlist">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-5xl md:text-7xl font-bold tracking-tighter text-gray-900 mb-6 font-headline">Ready to level up?</h2>
+    <p class="text-xl text-gray-500 mb-12 tracking-tight">Be the first to know when PB Academy launches.</p>
+
+    <form class="flex flex-col gap-4 justify-center max-w-2xl mx-auto" id="waitlistForm" novalidate>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <input type="text" name="name" id="waitlistName" placeholder="Your Name"
+          class="px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-full text-lg shadow-sm"
+          required autocomplete="name" />
+        <div class="waitlist-iti w-full min-w-0">
+          <input type="tel" name="phone" id="waitlistPhone"
+            class="waitlist-phone-input px-6 py-4 w-full text-lg"
+            autocomplete="tel" />
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4 sm:items-stretch">
+        <select name="playingExperience" id="waitlistExperience"
+          class="px-6 py-4 rounded-2xl border border-gray-200 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-full sm:flex-1 min-w-0 text-lg shadow-sm bg-white text-gray-900 cursor-pointer"
+          aria-label="How long have you been playing pickleball?"
+          required>
+          <option value="" disabled selected>How long have you been playing?</option>
+          <option value="beginner">Beginner</option>
+          <option value="over-6-months">Over 6 months</option>
+          <option value="over-1-year">Over a year</option>
+          <option value="over-2-years">Over 2 years</option>
+        </select>
+        <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-2xl text-lg font-medium hover:bg-gray-800 transition-colors whitespace-nowrap shadow-md sm:shrink-0">Join Waitlist</button>
+      </div>
+    </form>
+  </div>
+</section>

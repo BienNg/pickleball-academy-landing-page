@@ -22,13 +22,12 @@ function openWaitlistSuccessModal(name) {
   dismiss?.focus();
 }
 
-function initWaitlistForm() {
-  const form = document.getElementById('waitlistForm');
+function bindWaitlistForm(form) {
   if (!form) return;
 
-  const nameInput = form.querySelector('#waitlistName');
-  const phoneInput = form.querySelector('#waitlistPhone');
-  const experienceInput = form.querySelector('#waitlistExperience');
+  const nameInput = form.querySelector('input[name="name"]');
+  const phoneInput = form.querySelector('input[type="tel"]');
+  const experienceInput = form.querySelector('select[name="playingExperience"]');
   if (!phoneInput) return;
 
   let iti = null;
@@ -69,11 +68,6 @@ function initWaitlistForm() {
     phoneInput.classList.remove('error');
     phoneInput.closest('.iti')?.classList.remove('iti--error');
   });
-
-  const successModal = $('waitlistSuccessModal');
-  const successDismiss = $('waitlistSuccessDismiss');
-  successDismiss?.addEventListener('click', closeWaitlistSuccessModal);
-  successModal?.addEventListener('click', () => closeWaitlistSuccessModal());
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -165,5 +159,16 @@ function initWaitlistForm() {
     } else {
       validateAndFinish();
     }
+  });
+}
+
+function initWaitlistForm() {
+  const successModal = $('waitlistSuccessModal');
+  const successDismiss = $('waitlistSuccessDismiss');
+  successDismiss?.addEventListener('click', closeWaitlistSuccessModal);
+  successModal?.addEventListener('click', () => closeWaitlistSuccessModal());
+
+  ['waitlistForm', 'waitlistFormSecondary'].forEach((id) => {
+    bindWaitlistForm(document.getElementById(id));
   });
 }
